@@ -30,6 +30,8 @@ from flask import Flask, jsonify, request
 
 import audit
 import config
+import detector
+import scoring
 
 app = Flask(__name__)
 
@@ -201,16 +203,39 @@ def submit():
     """
     payload = request.get_json(silent=True) or {}
 
-    # TODO: delete this and build the route.
-    return jsonify({
-        "error": "not_implemented",
-        "message": "POST /submit isn't built yet — see the TODO in app.py.",
-        "you_sent": {
-            "text_length": len(payload.get("text", "")),
-            "creator_id": payload.get("creator_id"),
-        },
-    }), 501
+    text = payload.get("text")
+    creator_id = payload.get("creator_id")
 
+    # Validate the incoming data
+    if not isinstance(text, str) or not text.strip():
+        return jsonify({"error": "Text is required."}), 400
+
+    if not isinstance(creator_id, str) or not creator_id.strip():
+        return jsonify({"error": "Creator ID is required."}), 400
+
+    # Generate a unique ID for this submission
+    content_id = str(uuid.uuid4())
+    
+    # Run the actual AI detector
+    model_score = detector.model_signal(text)
+
+    # Record the submission in the audit log
+    audit.log_decision(
+        content_id=content_id,
+        creator_id=creator_id,
+        guess="unsure",
+        model_score=model_score,
+        status="decided"
+    )
+
+    return jsonify({
+        "content_id": content_id,
+        "guess": "unsure",
+        "confidence": 0.5,
+        "label": "Analysis not fully implemented yet.",
+        "model_score": model_score,
+        "style_score": 0.0
+    })
 
 @app.post("/appeal")
 def appeal():
