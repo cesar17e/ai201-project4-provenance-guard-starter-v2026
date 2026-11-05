@@ -189,56 +189,84 @@ def submit():
         style_score
     )
 
-    # 6. Record the decision in the audit log
+    # 7. Convert the combined score into a readable label
+    guess, label = scoring.score_to_label(combined_score)
+
+    # 8. Record the decision in the audit log
     audit.log_decision(
         content_id=content_id,
         creator_id=creator_id,
-        guess="unsure",
+        guess=guess,
         model_score=model_score,
         style_score=style_score,
         combined_score=combined_score,
+        label=label,
         status="decided"
     )
 
-    # 7. Return the result as JSON
+    # 9. Return the result as JSON
     return jsonify({
         "content_id": content_id,
-        "guess": "unsure",
+        "guess": guess,
         "confidence": combined_score,
-        "label": "Analysis not fully implemented yet.",
+        "label": label,
         "model_score": model_score,
         "style_score": style_score
     })
 
 @app.post("/appeal")
+
+@app.post("/appeal")
 def appeal():
+
     """
-    A writer says you got it wrong. ← TODO — Milestone 5
-
-    Expects JSON:
-        {"content_id": "...", "reasoning": "..."}
-
-    Should:
-      1. Check the content_id actually exists — `audit.entries_for(id)` tells
-         you. A typo here fails silently and looks like a broken endpoint,
-         which is the single most common way this milestone eats an hour.
-      2. Record the appeal with `audit.log_appeal(...)`, which moves the item
-         to `under_review`.
-      3. Confirm to the writer. No automatic re-checking needed.
-
-    This is the smallest endpoint in the project and the one that matters most
-    to the person on the other end. It's the only thing standing between a
-    wrong accusation and nothing at all.
+    This function handles appeals from users who wish to contest the decision made on their submitted text. It validates the appeal request, checks for the original submission, logs the appeal, and returns a confirmation response.
     """
-    payload = request.get_json(silent=True) or {}
+    # 1. Read the request
+    payload = request.get_json(silent=True)
 
-    # TODO: delete this and build the route.
+    if not isinstance(payload, dict):
+        return jsonify({"error": "Valid JSON is required."}), 400
+
+    content_id = payload.get("content_id")
+    reasoning = payload.get("reasoning")
+
+    # 2. Validate the input
+    if not isinstance(content_id, str) or not content_id.strip():
+        return jsonify({"error": "Content ID is required."}), 400
+
+    if not isinstance(reasoning, str) or not reasoning.strip():
+        return jsonify({"error": "Reasoning is required."}), 400
+
+    # 3. Find the original submission
+    entries = audit.entries_for(content_id)
+
+    original = next(
+        (entry for entry in entries if entry.get("status") == "decided"),
+        None
+    )
+
+    if original is None:
+        return jsonify({"error": "Content not found."}), 404
+
+    # 4. Get the original creator ID
+    creator_id = original["creator_id"]
+
+    # 5. Record the appeal
+    audit.log_appeal(
+        content_id=content_id,
+        creator_id=creator_id,
+        reasoning=reasoning
+    )
+
+    # 6. Confirm the appeal
     return jsonify({
-        "error": "not_implemented",
-        "message": "POST /appeal isn't built yet — see the TODO in app.py.",
-        "you_sent": payload,
-    }), 501
+        "content_id": content_id,
+        "status": "under_review",
+        "message": "Your appeal has been recorded."
+    })
 
+   
 
 # ── Already works ─────────────────────────────────────────────────────────────
 

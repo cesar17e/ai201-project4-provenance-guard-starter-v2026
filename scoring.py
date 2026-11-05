@@ -59,38 +59,31 @@ def combine_signals(model_score: float, style_score: float) -> float:
     )
 
 
+
 def score_to_label(score: float) -> tuple[str, str]:
-    """
-    Turn a score into a guess and the text a reader actually sees.
-    ← TODO (Milestone 5)
 
-    Returns:
-        (guess, label_text) — where `guess` is a short machine-readable string
-        like "ai" / "human" / "unsure", and `label_text` is the full sentence
-        shown to a person.
-
-    ⚠️ Write the label text for someone who has never heard the word
-    "threshold".
-
-        ✗ "human, 0.81 confidence"
-        ✓ "We think this was probably written by a person."
-
-    All three labels have to be **reachable**. If no score can produce one of
-    them, your ranges have a gap — and Milestone 5 asks you to submit text that
-    produces each one, which is how you'd find out.
-
-    The hardest one to write is "unsure". It has to admit uncertainty without
-    sounding like an accusation, because the person reading it may well have
-    written every word themselves. Your breakout asks your group what they'd
-    think if they got it on their own work. That question is the whole
-    milestone.
-    """
-    # TODO: replace this — thresholds are in config.py
+    "This function turns a numerical score into a human-readable label and explanation, returning a tuple of (label, explanation). The label can be 'human', 'unsure', or 'ai', and the explanation provides context for the score. The thresholds for these labels are defined in config.py, where scores below HUMAN_THRESHOLD indicate human writing, scores above AI_THRESHOLD indicate AI-generated writing, and scores in between are considered unsure."
+    
     if score >= config.AI_THRESHOLD:
-        return "ai", "PLACEHOLDER — write the high-confidence AI label."
+        return (
+            "ai",
+            "Our analysis suggests this writing may have been "
+            "AI-generated. This is not a definitive determination, "
+            "and you can request a review."
+        )
+
     if score <= config.HUMAN_THRESHOLD:
-        return "human", "PLACEHOLDER — write the high-confidence human label."
-    return "unsure", "PLACEHOLDER — write the unsure label."
+        return (
+            "human",
+            "Our analysis suggests this writing was likely "
+            "created by a person."
+        )
+
+    return (
+        "unsure",
+        "We couldn't confidently determine how this text was "
+        "written. This result does not indicate wrongdoing."
+    )
 
 
 def label_ranges() -> list[tuple[str, str]]:
