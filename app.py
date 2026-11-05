@@ -180,7 +180,14 @@ def submit():
     content_id = str(uuid.uuid4())
 
     # 4. Run both detection signals
-    model_score = detector.model_signal(text)
+    try:
+        model_score = detector.model_signal(text)
+    except ValueError as exc:
+        return jsonify({"error": str(exc)}), 400
+    except detector.DetectorUnavailable:
+        return jsonify({
+            "error": "The detector is unavailable. Please try again later."
+        }), 503
     style_score = stylometry.style_signal(text)
 
     # 5. Combine the signals (70% model, 30% style)
@@ -189,10 +196,10 @@ def submit():
         style_score
     )
 
-    # 7. Convert the combined score into a readable label
+    # 6. Convert the combined score into a readable label
     guess, label = scoring.score_to_label(combined_score)
 
-    # 8. Record the decision in the audit log
+    # 7. Record the decision in the audit log
     audit.log_decision(
         content_id=content_id,
         creator_id=creator_id,
@@ -204,7 +211,7 @@ def submit():
         status="decided"
     )
 
-    # 9. Return the result as JSON
+    # 8. Return the result as JSON
     return jsonify({
         "content_id": content_id,
         "guess": guess,
@@ -213,8 +220,6 @@ def submit():
         "model_score": model_score,
         "style_score": style_score
     })
-
-@app.post("/appeal")
 
 @app.post("/appeal")
 def appeal():
@@ -265,8 +270,6 @@ def appeal():
         "status": "under_review",
         "message": "Your appeal has been recorded."
     })
-
-   
 
 # ── Already works ─────────────────────────────────────────────────────────────
 

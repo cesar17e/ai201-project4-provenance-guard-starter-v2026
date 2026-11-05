@@ -1,0 +1,574 @@
+{
+  "timestamp": "2026-11-05T10:46:36+00:00",
+  "runner": "verify_unit7.py::verify",
+  "transport": "Flask test client; both detection signals run for real",
+  "sample_provenance": "AI-authored synthetic passages; not a verified-human accuracy dataset",
+  "recorded_to_project_audit_log": true,
+  "thresholds": {
+    "human": 0.3,
+    "ai": 0.8
+  },
+  "submissions": [
+    {
+      "name": "varied vocabulary",
+      "request": {
+        "text": "Beneath the laundromat's flickering fluorescents, Inez balanced a chipped ramekin on her unicycle. Why? Nobody asked. The accordionist sneezed; a startled whippet bolted past the begonias, trailing somebody's chartreuse scarf. I pocketed the bent teaspoon. Enough excitement for Tuesday.",
+        "creator_id": "unit7_verify_9bc7bed7_01"
+      },
+      "http_status": 200,
+      "response": {
+        "confidence": 0.16753493937242464,
+        "content_id": "53e2b108-b6ef-41d1-abee-916951b42b42",
+        "guess": "human",
+        "label": "Our analysis suggests this writing was likely created by a person.",
+        "model_score": 0.127,
+        "style_score": 0.2621164645747488
+      },
+      "audit_entry": {
+        "timestamp": "2026-11-05T10:46:45+00:00",
+        "content_id": "53e2b108-b6ef-41d1-abee-916951b42b42",
+        "creator_id": "unit7_verify_9bc7bed7_01",
+        "guess": "human",
+        "model_score": 0.127,
+        "style_score": 0.2621164645747488,
+        "combined_score": 0.16753493937242464,
+        "label": "Our analysis suggests this writing was likely created by a person.",
+        "status": "decided"
+      }
+    },
+    {
+      "name": "repetition",
+      "request": {
+        "text": "The system is designed to improve efficiency and provide reliable results. The system is designed to improve efficiency and provide reliable results. The system is designed to improve efficiency and provide reliable results. The system is designed to improve efficiency and provide reliable results. The system is designed to improve efficiency and provide reliable results. The system is designed to improve efficiency and provide reliable results. The system is designed to improve efficiency and provide reliable results. The system is designed to improve efficiency and provide reliable results. The system is designed to improve efficiency and provide reliable results. The system is designed to improve efficiency and provide reliable results. The system is designed to improve efficiency and provide reliable results. The system is designed to improve efficiency and provide reliable results.",
+        "creator_id": "unit7_verify_9bc7bed7_02"
+      },
+      "http_status": 200,
+      "response": {
+        "confidence": 0.9781588765294771,
+        "content_id": "0d58586e-21f0-4d92-93c3-ae1d5d7820cc",
+        "guess": "ai",
+        "label": "Our analysis suggests this writing may have been AI-generated. This is not a definitive determination, and you can request a review.",
+        "model_score": 0.9956,
+        "style_score": 0.937462921764924
+      },
+      "audit_entry": {
+        "timestamp": "2026-11-05T10:46:48+00:00",
+        "content_id": "0d58586e-21f0-4d92-93c3-ae1d5d7820cc",
+        "creator_id": "unit7_verify_9bc7bed7_02",
+        "guess": "ai",
+        "model_score": 0.9956,
+        "style_score": 0.937462921764924,
+        "combined_score": 0.9781588765294771,
+        "label": "Our analysis suggests this writing may have been AI-generated. This is not a definitive determination, and you can request a review.",
+        "status": "decided"
+      }
+    },
+    {
+      "name": "ordinary paragraph",
+      "request": {
+        "text": "I enjoy programming. Sometimes it gets frustrating! But when everything finally works, it's worth it.",
+        "creator_id": "unit7_verify_9bc7bed7_03"
+      },
+      "http_status": 200,
+      "response": {
+        "confidence": 0.5062589982374202,
+        "content_id": "652b43fe-797e-40aa-b069-c59fe9ceb744",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.5678,
+        "style_score": 0.36266332745806706
+      },
+      "audit_entry": {
+        "timestamp": "2026-11-05T10:46:53+00:00",
+        "content_id": "652b43fe-797e-40aa-b069-c59fe9ceb744",
+        "creator_id": "unit7_verify_9bc7bed7_03",
+        "guess": "unsure",
+        "model_score": 0.5678,
+        "style_score": 0.36266332745806706,
+        "combined_score": 0.5062589982374202,
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "status": "decided"
+      }
+    },
+    {
+      "name": "formal paragraph",
+      "request": {
+        "text": "During the afternoon meeting, the committee reviewed the repair estimates and approved the replacement of two windows. The secretary recorded the vote in the minutes. Three members requested more information about the delivery schedule.",
+        "creator_id": "unit7_verify_9bc7bed7_04"
+      },
+      "http_status": 200,
+      "response": {
+        "confidence": 0.46331525822751884,
+        "content_id": "d2401e41-518a-426e-b0dc-e7914e2e6f25",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.4452,
+        "style_score": 0.5055841940917296
+      },
+      "audit_entry": {
+        "timestamp": "2026-11-05T10:46:59+00:00",
+        "content_id": "d2401e41-518a-426e-b0dc-e7914e2e6f25",
+        "creator_id": "unit7_verify_9bc7bed7_04",
+        "guess": "unsure",
+        "model_score": 0.4452,
+        "style_score": 0.5055841940917296,
+        "combined_score": 0.46331525822751884,
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "status": "decided"
+      }
+    },
+    {
+      "name": "edited formulaic paragraph",
+      "request": {
+        "text": "The proposed framework requires careful consideration of several factors. First: the system needs to handle different inputs. Easy enough? Not always. One badly formatted request can still spoil the whole thing.",
+        "creator_id": "unit7_verify_9bc7bed7_05"
+      },
+      "http_status": 200,
+      "response": {
+        "confidence": 0.27823812633830824,
+        "content_id": "f4252376-4e44-43b6-ba5a-d5bbed696d48",
+        "guess": "human",
+        "label": "Our analysis suggests this writing was likely created by a person.",
+        "model_score": 0.2475,
+        "style_score": 0.3499604211276941
+      },
+      "audit_entry": {
+        "timestamp": "2026-11-05T10:47:02+00:00",
+        "content_id": "f4252376-4e44-43b6-ba5a-d5bbed696d48",
+        "creator_id": "unit7_verify_9bc7bed7_05",
+        "guess": "human",
+        "model_score": 0.2475,
+        "style_score": 0.3499604211276941,
+        "combined_score": 0.27823812633830824,
+        "label": "Our analysis suggests this writing was likely created by a person.",
+        "status": "decided"
+      }
+    },
+    {
+      "name": "narrative",
+      "request": {
+        "text": "I missed the bus. Again! The toast was still in my hand when the driver pulled away, and I wondered whether breakfast counted as an excuse for being late. My sister laughed so hard she spilled her coffee.",
+        "creator_id": "unit7_verify_9bc7bed7_06"
+      },
+      "http_status": 200,
+      "response": {
+        "confidence": 0.4191402786377708,
+        "content_id": "86a2a529-0e70-44ec-b925-738d6c35b8b0",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.5021,
+        "style_score": 0.22556759545923633
+      },
+      "audit_entry": {
+        "timestamp": "2026-11-05T10:47:03+00:00",
+        "content_id": "86a2a529-0e70-44ec-b925-738d6c35b8b0",
+        "creator_id": "unit7_verify_9bc7bed7_06",
+        "guess": "unsure",
+        "model_score": 0.5021,
+        "style_score": 0.22556759545923633,
+        "combined_score": 0.4191402786377708,
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "status": "decided"
+      }
+    },
+    {
+      "name": "punctuation",
+      "request": {
+        "text": "The box contained three things: a receipt, a brass key, and a note. Who left it there? I checked the hallway; nobody answered. Strange, but hardly a mystery worth missing lunch over!",
+        "creator_id": "unit7_verify_9bc7bed7_07"
+      },
+      "http_status": 200,
+      "response": {
+        "confidence": 0.33833038728973425,
+        "content_id": "52d07101-1c6a-4433-b1af-9c59563c7eb0",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.3229,
+        "style_score": 0.3743346242991142
+      },
+      "audit_entry": {
+        "timestamp": "2026-11-05T10:47:04+00:00",
+        "content_id": "52d07101-1c6a-4433-b1af-9c59563c7eb0",
+        "creator_id": "unit7_verify_9bc7bed7_07",
+        "guess": "unsure",
+        "model_score": 0.3229,
+        "style_score": 0.3743346242991142,
+        "combined_score": 0.33833038728973425,
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "status": "decided"
+      }
+    },
+    {
+      "name": "sentence variation",
+      "request": {
+        "text": "Wait. The rain had stopped, but every gutter along our street was still spilling water onto the pavement while the neighbors argued about whose turn it was to move the bins. We stayed inside.",
+        "creator_id": "unit7_verify_9bc7bed7_08"
+      },
+      "http_status": 200,
+      "response": {
+        "confidence": 0.360396134893748,
+        "content_id": "0ac8a0ca-c5cc-4f34-bb5f-166e1e1a15d9",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.4125,
+        "style_score": 0.23882044964582694
+      },
+      "audit_entry": {
+        "timestamp": "2026-11-05T10:47:04+00:00",
+        "content_id": "0ac8a0ca-c5cc-4f34-bb5f-166e1e1a15d9",
+        "creator_id": "unit7_verify_9bc7bed7_08",
+        "guess": "unsure",
+        "model_score": 0.4125,
+        "style_score": 0.23882044964582694,
+        "combined_score": 0.360396134893748,
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "status": "decided"
+      }
+    },
+    {
+      "name": "short valid paragraph",
+      "request": {
+        "text": "The blue cup is on the kitchen table. I put it there after breakfast.",
+        "creator_id": "unit7_verify_9bc7bed7_09"
+      },
+      "http_status": 200,
+      "response": {
+        "confidence": 0.4986772084959643,
+        "content_id": "1dae0596-6706-4422-9bf6-d329ce65122b",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.4888,
+        "style_score": 0.5217240283198812
+      },
+      "audit_entry": {
+        "timestamp": "2026-11-05T10:47:04+00:00",
+        "content_id": "1dae0596-6706-4422-9bf6-d329ce65122b",
+        "creator_id": "unit7_verify_9bc7bed7_09",
+        "guess": "unsure",
+        "model_score": 0.4888,
+        "style_score": 0.5217240283198812,
+        "combined_score": 0.4986772084959643,
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "status": "decided"
+      }
+    },
+    {
+      "name": "descriptive paragraph",
+      "request": {
+        "text": "The little bookshop smelled of dust and orange peel. Someone had left a shopping list between the pages of an atlas, beside a penciled route through towns I had never heard of. I bought it for the list.",
+        "creator_id": "unit7_verify_9bc7bed7_10"
+      },
+      "http_status": 200,
+      "response": {
+        "confidence": 0.3287417300800144,
+        "content_id": "01ef104f-d32f-418b-9318-959356b3d5ee",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.3035,
+        "style_score": 0.3876391002667147
+      },
+      "audit_entry": {
+        "timestamp": "2026-11-05T10:47:04+00:00",
+        "content_id": "01ef104f-d32f-418b-9318-959356b3d5ee",
+        "creator_id": "unit7_verify_9bc7bed7_10",
+        "guess": "unsure",
+        "model_score": 0.3035,
+        "style_score": 0.3876391002667147,
+        "combined_score": 0.3287417300800144,
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "status": "decided"
+      }
+    }
+  ],
+  "appeals": [
+    {
+      "request": {
+        "content_id": "53e2b108-b6ef-41d1-abee-916951b42b42",
+        "reasoning": "This is a verification appeal. Please review the original decision."
+      },
+      "http_status": 200,
+      "response": {
+        "content_id": "53e2b108-b6ef-41d1-abee-916951b42b42",
+        "message": "Your appeal has been recorded.",
+        "status": "under_review"
+      },
+      "audit_entry": {
+        "timestamp": "2026-11-05T10:47:04+00:00",
+        "content_id": "53e2b108-b6ef-41d1-abee-916951b42b42",
+        "creator_id": "unit7_verify_9bc7bed7_01",
+        "event": "appeal",
+        "status": "under_review",
+        "reasoning": "This is a verification appeal. Please review the original decision."
+      }
+    },
+    {
+      "request": {
+        "content_id": "0d58586e-21f0-4d92-93c3-ae1d5d7820cc",
+        "reasoning": "This is a verification appeal. Please review the original decision."
+      },
+      "http_status": 200,
+      "response": {
+        "content_id": "0d58586e-21f0-4d92-93c3-ae1d5d7820cc",
+        "message": "Your appeal has been recorded.",
+        "status": "under_review"
+      },
+      "audit_entry": {
+        "timestamp": "2026-11-05T10:47:04+00:00",
+        "content_id": "0d58586e-21f0-4d92-93c3-ae1d5d7820cc",
+        "creator_id": "unit7_verify_9bc7bed7_02",
+        "event": "appeal",
+        "status": "under_review",
+        "reasoning": "This is a verification appeal. Please review the original decision."
+      }
+    },
+    {
+      "request": {
+        "content_id": "652b43fe-797e-40aa-b069-c59fe9ceb744",
+        "reasoning": "This is a verification appeal. Please review the original decision."
+      },
+      "http_status": 200,
+      "response": {
+        "content_id": "652b43fe-797e-40aa-b069-c59fe9ceb744",
+        "message": "Your appeal has been recorded.",
+        "status": "under_review"
+      },
+      "audit_entry": {
+        "timestamp": "2026-11-05T10:47:04+00:00",
+        "content_id": "652b43fe-797e-40aa-b069-c59fe9ceb744",
+        "creator_id": "unit7_verify_9bc7bed7_03",
+        "event": "appeal",
+        "status": "under_review",
+        "reasoning": "This is a verification appeal. Please review the original decision."
+      }
+    },
+    {
+      "request": {
+        "content_id": "d2401e41-518a-426e-b0dc-e7914e2e6f25",
+        "reasoning": "This is a verification appeal. Please review the original decision."
+      },
+      "http_status": 200,
+      "response": {
+        "content_id": "d2401e41-518a-426e-b0dc-e7914e2e6f25",
+        "message": "Your appeal has been recorded.",
+        "status": "under_review"
+      },
+      "audit_entry": {
+        "timestamp": "2026-11-05T10:47:04+00:00",
+        "content_id": "d2401e41-518a-426e-b0dc-e7914e2e6f25",
+        "creator_id": "unit7_verify_9bc7bed7_04",
+        "event": "appeal",
+        "status": "under_review",
+        "reasoning": "This is a verification appeal. Please review the original decision."
+      }
+    },
+    {
+      "request": {
+        "content_id": "f4252376-4e44-43b6-ba5a-d5bbed696d48",
+        "reasoning": "This is a verification appeal. Please review the original decision."
+      },
+      "http_status": 200,
+      "response": {
+        "content_id": "f4252376-4e44-43b6-ba5a-d5bbed696d48",
+        "message": "Your appeal has been recorded.",
+        "status": "under_review"
+      },
+      "audit_entry": {
+        "timestamp": "2026-11-05T10:47:04+00:00",
+        "content_id": "f4252376-4e44-43b6-ba5a-d5bbed696d48",
+        "creator_id": "unit7_verify_9bc7bed7_05",
+        "event": "appeal",
+        "status": "under_review",
+        "reasoning": "This is a verification appeal. Please review the original decision."
+      }
+    },
+    {
+      "request": {
+        "content_id": "86a2a529-0e70-44ec-b925-738d6c35b8b0",
+        "reasoning": "This is a verification appeal. Please review the original decision."
+      },
+      "http_status": 200,
+      "response": {
+        "content_id": "86a2a529-0e70-44ec-b925-738d6c35b8b0",
+        "message": "Your appeal has been recorded.",
+        "status": "under_review"
+      },
+      "audit_entry": {
+        "timestamp": "2026-11-05T10:47:04+00:00",
+        "content_id": "86a2a529-0e70-44ec-b925-738d6c35b8b0",
+        "creator_id": "unit7_verify_9bc7bed7_06",
+        "event": "appeal",
+        "status": "under_review",
+        "reasoning": "This is a verification appeal. Please review the original decision."
+      }
+    },
+    {
+      "request": {
+        "content_id": "52d07101-1c6a-4433-b1af-9c59563c7eb0",
+        "reasoning": "This is a verification appeal. Please review the original decision."
+      },
+      "http_status": 200,
+      "response": {
+        "content_id": "52d07101-1c6a-4433-b1af-9c59563c7eb0",
+        "message": "Your appeal has been recorded.",
+        "status": "under_review"
+      },
+      "audit_entry": {
+        "timestamp": "2026-11-05T10:47:04+00:00",
+        "content_id": "52d07101-1c6a-4433-b1af-9c59563c7eb0",
+        "creator_id": "unit7_verify_9bc7bed7_07",
+        "event": "appeal",
+        "status": "under_review",
+        "reasoning": "This is a verification appeal. Please review the original decision."
+      }
+    },
+    {
+      "request": {
+        "content_id": "0ac8a0ca-c5cc-4f34-bb5f-166e1e1a15d9",
+        "reasoning": "This is a verification appeal. Please review the original decision."
+      },
+      "http_status": 200,
+      "response": {
+        "content_id": "0ac8a0ca-c5cc-4f34-bb5f-166e1e1a15d9",
+        "message": "Your appeal has been recorded.",
+        "status": "under_review"
+      },
+      "audit_entry": {
+        "timestamp": "2026-11-05T10:47:04+00:00",
+        "content_id": "0ac8a0ca-c5cc-4f34-bb5f-166e1e1a15d9",
+        "creator_id": "unit7_verify_9bc7bed7_08",
+        "event": "appeal",
+        "status": "under_review",
+        "reasoning": "This is a verification appeal. Please review the original decision."
+      }
+    },
+    {
+      "request": {
+        "content_id": "1dae0596-6706-4422-9bf6-d329ce65122b",
+        "reasoning": "This is a verification appeal. Please review the original decision."
+      },
+      "http_status": 200,
+      "response": {
+        "content_id": "1dae0596-6706-4422-9bf6-d329ce65122b",
+        "message": "Your appeal has been recorded.",
+        "status": "under_review"
+      },
+      "audit_entry": {
+        "timestamp": "2026-11-05T10:47:04+00:00",
+        "content_id": "1dae0596-6706-4422-9bf6-d329ce65122b",
+        "creator_id": "unit7_verify_9bc7bed7_09",
+        "event": "appeal",
+        "status": "under_review",
+        "reasoning": "This is a verification appeal. Please review the original decision."
+      }
+    },
+    {
+      "request": {
+        "content_id": "01ef104f-d32f-418b-9318-959356b3d5ee",
+        "reasoning": "This is a verification appeal. Please review the original decision."
+      },
+      "http_status": 200,
+      "response": {
+        "content_id": "01ef104f-d32f-418b-9318-959356b3d5ee",
+        "message": "Your appeal has been recorded.",
+        "status": "under_review"
+      },
+      "audit_entry": {
+        "timestamp": "2026-11-05T10:47:04+00:00",
+        "content_id": "01ef104f-d32f-418b-9318-959356b3d5ee",
+        "creator_id": "unit7_verify_9bc7bed7_10",
+        "event": "appeal",
+        "status": "under_review",
+        "reasoning": "This is a verification appeal. Please review the original decision."
+      }
+    }
+  ],
+  "invalid_inputs": [
+    {
+      "name": "missing text",
+      "request": {
+        "creator_id": "invalid"
+      },
+      "http_status": 400,
+      "response": {
+        "error": "Text is required."
+      }
+    },
+    {
+      "name": "empty text",
+      "request": {
+        "text": "",
+        "creator_id": "invalid"
+      },
+      "http_status": 400,
+      "response": {
+        "error": "Text is required."
+      }
+    },
+    {
+      "name": "whitespace-only text",
+      "request": {
+        "text": "   ",
+        "creator_id": "invalid"
+      },
+      "http_status": 400,
+      "response": {
+        "error": "Text is required."
+      }
+    },
+    {
+      "name": "missing creator ID",
+      "request": {
+        "text": "This paragraph has no creator ID."
+      },
+      "http_status": 400,
+      "response": {
+        "error": "Creator ID is required."
+      }
+    },
+    {
+      "name": "non-string text",
+      "request": {
+        "text": 123,
+        "creator_id": "invalid"
+      },
+      "http_status": 400,
+      "response": {
+        "error": "Text is required."
+      }
+    },
+    {
+      "name": "JSON body is not an object",
+      "request": [
+        "not",
+        "an",
+        "object"
+      ],
+      "http_status": 400,
+      "response": {
+        "error": "Valid JSON object is required."
+      }
+    }
+  ],
+  "controlled_score_checks": 1007,
+  "reachable_labels": [
+    "ai",
+    "human",
+    "unsure"
+  ],
+  "short_text_check": {
+    "http_status": 400,
+    "response": {
+      "error": "Text is too short to score — a few sentences at least."
+    }
+  },
+  "unavailable_detector_status": 503,
+  "checks": {
+    "valid_submissions_and_matching_audit_entries": 10,
+    "appeals_recorded_and_under_review": 10,
+    "required_invalid_cases_returning_400": 6,
+    "invalid_appeal_checks": 4,
+    "original_decisions_preserved": true,
+    "false_positive_rate": "Not evaluated: 20 independently verified human-written samples are required.",
+    "unit8_three_trial_evaluation": "Not run; this is a single Unit 7 functional verification."
+  }
+}

@@ -50,9 +50,8 @@ DETECTOR_MAX_TOKENS = 400
 # ─── Scoring (Milestone 4) ───────────────────────────────────────────────────
 # How much each signal counts toward the combined score.
 #
-# ⚠️ These are placeholders. Milestone 4 asks you to write your combining rule
-# down BEFORE you code it, and to put the numbers in your README. Whatever you
-# decide, it goes here.
+# The model contributes 70% and the style signal 30%. The rule and its
+# limitations are documented in README.md under Signals and Scoring.
 
 WEIGHT_MODEL_SIGNAL = 0.70
 WEIGHT_STYLE_SIGNAL = 0.30
@@ -62,9 +61,9 @@ WEIGHT_STYLE_SIGNAL = 0.30
 # Where one label becomes another. Scores run 0.0 (confidently human) to 1.0
 # (confidently AI).
 #
-#   score < HUMAN_THRESHOLD          -> high-confidence human
+#   score <= HUMAN_THRESHOLD         -> high-confidence human
 #   between the two                  -> unsure
-#   score > AI_THRESHOLD             -> high-confidence AI
+#   score >= AI_THRESHOLD            -> high-confidence AI
 #
 # ⚠️ This is where your false-positive decision from Milestone 1 actually gets
 # made. Widening the unsure band means fewer wrong accusations and more AI text
@@ -74,15 +73,8 @@ WEIGHT_STYLE_SIGNAL = 0.30
 HUMAN_THRESHOLD = 0.30
 AI_THRESHOLD = 0.80
 
-# ⚠️ One thing that catches people out in Milestone 5. A weighted average can
-# only land between its two inputs — so while `style_signal` is still the stub
-# returning 0.5, the combined score can never leave 0.25–0.75 no matter what
-# the model signal says, and the human label needs a model score below 0.20 to
-# be reachable at all.
-#
-# If a label you can't reach is the problem, the fix is upstream of the
-# thresholds: a style signal that actually varies. `scoring.label_ranges()`
-# prints the bands; the reachable range is a different question.
+# A weighted average can only land between its inputs. Verify label
+# reachability with actual text as well as controlled score boundaries.
 
 
 # ─── Rate limiting (UNIT 8) ──────────────────────────────────────────────────

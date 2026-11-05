@@ -1,8 +1,7 @@
 """
 Turning two numbers into one, and one number into something a person can read.
-← YOU BUILD THIS IN MILESTONES 4 AND 5
 
-Two functions live here, and both are stubs.
+The combining rule and all three label variants live here.
 
 `combine_signals` is where your false-positive decision from Milestone 1
 actually gets made. Everything above it — the labels, the appeal path — is
@@ -21,7 +20,7 @@ import config
 
 def combine_signals(model_score: float, style_score: float) -> float:
     """
-    Combine two 0–1 signals into one 0–1 score. ← TODO (Milestone 4)
+    Combine the model (70%) and style (30%) signals into one 0–1 score.
 
     Both inputs point the same way: higher means more likely AI. Your output
     should too.
@@ -49,10 +48,8 @@ def combine_signals(model_score: float, style_score: float) -> float:
       - Milestone 4 asks you to find a case where your two signals split and
         write it down. That case is what this rule exists to handle.
 
-    The weights in config.py are placeholders. Change them, or ignore them and
-    write a different rule.
+    The active weights are in config.py and the rule is documented in README.md.
     """
-    # TODO: replace this
     return (
         config.WEIGHT_MODEL_SIGNAL * model_score
         + config.WEIGHT_STYLE_SIGNAL * style_score
@@ -62,8 +59,7 @@ def combine_signals(model_score: float, style_score: float) -> float:
 
 def score_to_label(score: float) -> tuple[str, str]:
 
-    "This function turns a numerical score into a human-readable label and explanation, returning a tuple of (label, explanation). The label can be 'human', 'unsure', or 'ai', and the explanation provides context for the score. The thresholds for these labels are defined in config.py, where scores below HUMAN_THRESHOLD indicate human writing, scores above AI_THRESHOLD indicate AI-generated writing, and scores in between are considered unsure."
-    
+    """Return (guess, label), including each threshold in its outer band."""
     if score >= config.AI_THRESHOLD:
         return (
             "ai",
@@ -92,7 +88,7 @@ def label_ranges() -> list[tuple[str, str]]:
     label text — given to you so the numbers can't drift apart from config.py.
     """
     return [
-        ("high-confidence human", f"0.00 – {config.HUMAN_THRESHOLD:.2f}"),
-        ("unsure", f"{config.HUMAN_THRESHOLD:.2f} – {config.AI_THRESHOLD:.2f}"),
-        ("high-confidence AI", f"{config.AI_THRESHOLD:.2f} – 1.00"),
+        ("high-confidence human", f"0.00 <= score <= {config.HUMAN_THRESHOLD:.2f}"),
+        ("unsure", f"{config.HUMAN_THRESHOLD:.2f} < score < {config.AI_THRESHOLD:.2f}"),
+        ("high-confidence AI", f"{config.AI_THRESHOLD:.2f} <= score <= 1.00"),
     ]

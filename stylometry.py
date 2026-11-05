@@ -1,12 +1,11 @@
 """
-Signal two: the style signal. ← YOU BUILD THIS IN MILESTONE 4
+Signal two: the style signal.
 
 Signal one reads the text for meaning. This one measures it *as text* — the
 shape of it, without understanding a word.
 
-Three measures are stubbed below because the brief names those three. They are
-stubs, not implementations: what they compute is yours, and so is how you
-combine them.
+Three measurements describe the shape of the writing and are combined into
+one score. Their normalization and weights are documented in README.md.
 
     sentence_length_spread   do sentences vary in length, or march in step?
     type_token_ratio         how much of the vocabulary repeats?
@@ -45,13 +44,12 @@ def words(text: str) -> list[str]:
     return re.findall(r"[a-z0-9']+", text.lower())
 
 
-# ── The three measures — YOU BUILD THESE ─────────────────────────────────────
+# ── The three measures ──────────────────────────────────────────────────────
 
 def sentence_length_spread(text: str) -> float:
     """
     This function measures how much sentences vary in length, and returns a float, we did this by calculating the standard deviation of the sentence lengths and dividing it by the mean length. A higher value indicates more variation in sentence lengths, which is often a characteristic of human writing, while a lower value suggests more uniformity, which can be indicative of AI-generated text.
     """
-    # TODO: replace this
     sentence_list = sentences(text)
 
     lengths = [len(words(s)) for s in sentence_list]
@@ -72,7 +70,6 @@ def type_token_ratio(text: str) -> float:
     """
     This function measures the diversity of vocabulary in the text. It calculates the ratio of unique words (types) to the total number of words (tokens), returning a float. A higher type-token ratio indicates a richer and more varied vocabulary, which is often associated with human writing, while a lower ratio suggests more repetition and uniformity, which can be characteristic of AI-generated text.
     """
-    # TODO: replace this
     tokens = words(text)
 
     if not tokens:
@@ -88,7 +85,6 @@ def punctuation_density(text: str) -> float:
     """
     This function measures the density of punctuation in the text. It counts the number of punctuation characters and divides it by the total number of characters in the text, returning a float. A higher punctuation density may indicate more complex sentence structures and stylistic choices, which can be characteristic of human writing, while a lower density may suggest simpler, more uniform text, which can be indicative of AI-generated content.
     """
-    # TODO: replace this
     if not text:
         return 0.0
 
