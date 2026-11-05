@@ -1,134 +1,31 @@
-# Acceptance criteria — Provenance Guard
+# Provenance Guard — Unit 7 Acceptance Criteria
 
-Five criteria that say what "working" means for this service, written in unit 7
-**before** you built it.
+## 1. False-positive rate
 
-**All five are yours.** None are given.
+**Target:** Among 20 independently verified human-written samples, no more than 1 may receive the high-confidence AI label (a false-positive rate of at most 5%).
 
-An acceptance criterion names a number or something plainly observable. *"The
-detector is accurate"* is an opinion — and perfect AI detection isn't possible
-anyway, so it's an opinion about something nobody can deliver. *"Of 10 pieces I
-wrote myself, at most 1 is labelled high-confidence AI"* is a criterion.
+**Reason:** Incorrectly accusing a real writer of using AI can damage trust, so I want the system to be cautious about making high-confidence accusations.
 
-Under each, write a sentence or two on **why that target**. *"I allow at most 1
-false positive in 10 because on a writing site a wrong accusation costs more
-than a missed detection"* is a real answer.
+## 2. Label coverage
 
-> Missing your own targets next unit costs you nothing. Setting a target so
-> easy you can't miss it does.
+**Target:** All three labels—high-confidence human, unsure, and high-confidence AI—must be reachable through controlled test scores. Every score from 0 to 1 must map to exactly one label, including threshold boundaries.
 
----
+**Reason:** Every valid score needs an unambiguous, understandable outcome. The system must be able to express uncertainty rather than forcing every result into AI or human.
 
-## Pick numbers you can defend
+## 3. Appeal handling
 
-**Cover at least three of these five areas.** They're prompts, not a form.
+**Target:** For 10 valid appeals referencing 10 existing content IDs, all 10 must create an appeal record in the audit log and change the corresponding content's status to `under_review`.
 
-| Area | A question it could answer |
-|---|---|
-| False positives | How often may a human's writing get called AI? |
-| Score spread | How far apart should clearly-AI and clearly-human text score? |
-| Label coverage | Is every one of your three labels actually reachable? |
-| The appeal path | Does an appeal always change status and always get recorded? |
-| Bad input | What happens when `text` is missing, empty, or enormous? |
+**Reason:** A writer who disagrees with a decision should have a dependable way to request review, and the service needs to preserve evidence of that request.
 
-Two things worth knowing before you pick numbers:
+## 4. Invalid input handling
 
-- **The expensive mistake is one-sided.** Missing some AI text costs the site a
-  little. Accusing a real writer costs that person a lot. A criterion that
-  treats both errors as equally bad is describing a system nobody would ship.
-- **Unit 8 tests across three trials, and the target has to hold across all
-  three.** Your first signal runs a model, so identical input can score
-  differently twice. A target of "at most 1 in 10" against trials of 2, 1, 2 is
-  a **miss**.
+**Target:** All 6 invalid submission cases must return an HTTP 4xx response without crashing the service: missing text, empty text, whitespace-only text, missing creator ID, non-string text, and a JSON body that is not an object.
 
----
-## 1.
+**Reason:** Invalid requests should fail predictably. The detector should not attempt to analyze unusable input or return a server error because the input was malformed.
 
-<!-- Your criterion. It must name a number. -->
+## 5. Audit logging
 
+**Target:** For 10 valid submissions, all 10 must create an audit log entry containing a timestamp, content ID, creator ID, model signal score, style signal score, combined score, and status. Each entry must correspond to the returned submission ID.
 
-
-**Why this target:**
-
-
-
----
-
-## 2.
-
-<!-- Your criterion. -->
-
-
-
-**Why this target:**
-
-
-
----
-
-## 3.
-
-<!-- Your criterion. -->
-
-
-
-**Why this target:**
-
-
-
----
-
-## 4.
-
-<!-- Your criterion. -->
-
-
-
-**Why this target:**
-
-
-
----
-
-## 5.
-
-<!-- Your criterion. -->
-
-
-
-**Why this target:**
-
-
-
----
-
-<!-- ─────────────────────────────────────────────────────────────────────────
-     UNIT 8 — read this before you change anything above.
-
-     If a criterion turns out to be BROKEN rather than merely unmet, you can
-     revise it, and that earns credit. But never delete or edit the original
-     line. Add the revision underneath, like this:
-
-         ## 2. Uncertain cases land in the unsure band
-
-         The system handles uncertain cases well.
-
-         **Why this target:** ...
-
-         > **Revised in unit 8:** Text I judged borderline scores between
-         > 0.4 and 0.6 in at least 4 of 5 cases.
-         >
-         > **Why revised:** "well" gave me nothing to check. I couldn't
-         > reach a verdict from it at all.
-
-     That's a revision because the criterion couldn't be MEASURED.
-
-     Lowering a target because you missed it is not a revision, and it costs
-     you the point:
-
-         ✗ "At most 1 of 10 of my own pieces flagged as AI" → "at most 3
-            of 10", because 1 of 10 turned out to be hard.
-
-     A number you missed stays where it is, gets diagnosed, and gets a fix
-     attempted. That's where the points are.
-     ───────────────────────────────────────────────────────────────────────── -->
+**Reason:** Recording the information behind each decision makes the service easier to debug, allows a writer's appeal to be traced, and supports evaluation in Unit 8.
