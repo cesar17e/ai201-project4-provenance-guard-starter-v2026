@@ -33,47 +33,34 @@
 
 ## Signals and Scoring
 
-<!-- For each signal: what property it measures, why that might differ between
-     human and AI writing, and WHAT IT CAN'T SEE.
-
-     The blind spot is not optional. If you can't name it you don't understand
-     the signal yet — and unit 8's attack set is built out of blind spots. -->
-
 ### Signal one — the model signal
 
-**What it measures:**
+**What it measures:** The first signal uses a pretrained GPT-2 language model in `detector.py` to measure how predictable the submitted text is. It calculates perplexity and converts it into a score between 0 and 1, where higher scores indicate more AI-like writing.
 
-**Why that might differ between human and AI writing:**
+**Why that might differ between human and AI writing:** AI-generated writing can follow more predictable language patterns, while human writing may contain less conventional wording and sentence structures.
 
-**What it can't see:**
+**What it can't see:** The model cannot reliably determine who actually wrote something. A human might write very predictable or polished text, while AI-generated writing can be edited to appear less predictable. This can lead to incorrect classifications.
 
 ### Signal two — the style signal
 
-**What it measures:**
+**What it measures:** The second signal is implemented in `stylometry.py`. It analyzes three statistical properties of writing: sentence length variation, vocabulary diversity (type-token ratio), and punctuation density. These measurements are combined into a score between 0 and 1.
 
-**Why that might differ between human and AI writing:**
+**Why that might differ between human and AI writing:** AI-generated writing may have more consistent sentence lengths, repeated vocabulary, and predictable punctuation patterns. Human writing can have greater variation in these characteristics. My implementation assigns 40% weight to sentence length variation, 35% to vocabulary diversity, and 25% to punctuation density.
 
-**What it can't see:**
+**What it can't see:** This signal only analyzes the structure of the writing, not its meaning or actual authorship. A human could naturally write in a consistent style, while someone could change AI-generated writing by adding punctuation, varying sentence lengths, or replacing words. Type-token ratio also depends on text length, making comparisons between very short and long passages less reliable.
 
 ### The combining rule
 
-<!-- Write the rule in words, then give the numbers. What happens when the two
-     signals disagree? -->
+**The rule:** I use a weighted average of the two signals, giving more weight to the pretrained model because it analyzes language predictability, while the stylometry signal relies on simpler statistical measurements.
 
-**The rule:**
+**The numbers:** The model contributes 70% and the stylometry signal contributes 30%.
 
-**The numbers:**
+`combined_score = 0.70 * model_score + 0.30 * style_score`
 
-**Where it lives:** `scoring.py::combine_signals`
+**Where it lives:** `scoring.py::combine_signals`, with the weights defined in `config.py`.
 
-<!-- ⚠️ The grader checks your code against that line. If your rule lives
-     somewhere else, say where. -->
+**A case where my two signals split, and what my rule does with it:** In my third test sample, the model returned 0.6029 while stylometry returned 0.1985. Their combined score was approximately 0.4816. The weighted average brought the result closer to the middle, reflecting the disagreement between the two signals.
 
-**A case where my two signals split, and what my rule does with it:**
-
-
-
----
 
 ## Label Variants
 
@@ -92,8 +79,6 @@
 <!-- It's the hardest of the three. It has to admit uncertainty without
      sounding like an accusation, because the person reading it may well have
      written every word themselves. -->
-
-
 
 ---
 
