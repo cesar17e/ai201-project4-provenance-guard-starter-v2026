@@ -24,7 +24,7 @@ python test.py
 python app.py
 ```
 
-Use a second terminal for the HTTP requests below. `POST /ping` is the unchanged control route, `GET /health` reports service/model status, and `GET /log` returns the audit history. Invalid submission fields return 400; an unavailable detector returns 503. Appeals with missing fields return 400, and an unknown content ID returns 404. Rate limiting remains off for Unit 7.
+Use a second terminal for the HTTP requests below. `POST /ping` is the unchanged control route, `GET /health` reports service/model status, and `GET /log` returns the audit history. Invalid submission fields return 400; an unavailable detector returns 503. Appeals with missing fields return 400, and an unknown content ID returns 404. Rate limiting was off for Unit 7 and is enabled for Unit 8; see Rate Limiting below.
 
 See [RUNNING.md](RUNNING.md) for installation and troubleshooting. My five original targets are in [criteria.md](criteria.md), committed before the implementation. The same repository and audit history will be used in Unit 8.
 
@@ -198,32 +198,107 @@ The latest event for this content ID is `under_review`. The earlier `decided` en
 
 <!-- ═══════════════════════ UNIT 8 — THE TEST ═══════════════════════ -->
 
-> The following sections are reserved for Unit 8. They are not results or completed work for this Unit 7 submission.
+> Unit 8 work is recorded below. Milestone 1 implementation and verification are complete; the attack runs, criterion trials, diagnoses, and improvement sections will be filled in during the remaining milestones.
 
 
 ---
 
 ## Rate Limiting
 
-**My limits:** ___ per minute, ___ per day
+**My limits:** **10 requests per minute and 200 requests per day** on `POST /submit`. Limiting is enabled by default in `config.py`, and the decorator on `app.py::submit` applies both limits.
 
-**Why those numbers and not others:**
-<!-- Think about two people: a real writer submitting their own work a few
-     times an hour, and a script sending a thousand variations to map your
-     thresholds. Your numbers have to be liveable for the first and hostile to
-     the second. -->
+**Why those numbers:** Ten requests per minute allows a writer to submit a short burst of drafts, while stopping one caller from sending hundreds of scoring requests in a minute. The daily cap allows frequent legitimate use but limits sustained automated probing under one identity. These are starting limits for this local project; they do not establish that the service can handle a particular production workload.
 
-**What a caller counts as:** <!-- per address, or per creator_id? They fail
-differently — one script can look like a thousand callers, and one household
-can look like one. -->
+**What a caller counts as:** The starter's `rate_limit_key()` uses a nonempty string `creator_id`. If the JSON body has no usable creator ID, it falls back to the request's remote address. Two creator IDs have separate counters even when they use the same address. Requests without usable IDs share the address counter. Creator IDs are supplied by callers rather than authenticated, so changing IDs can evade the per-creator cap. The counters are stored in memory and are lost when the server restarts.
+
+All `/submit` requests count toward the limits, including invalid requests. Appeals, `/ping`, `/health`, and `/log` are not rate-limited. A writer can still appeal an existing decision after reaching their submission limit.
 
 **The run of status codes when I pushed past it:**
 
-<!-- python run_attacks.py --flood 15 -->
-
+```bash
+python run_attacks.py --flood 15
 ```
 
+The actual recorded run used a temporary local HTTP server and a fresh creator ID:
+
+```bash
+python run_attacks.py --flood 15 --creator unit8_m1_flood_4cc9cd41 --url http://127.0.0.1:62048
 ```
+
+```text
+200 200 200 200 200 200 200 200 200 200 429 429 429 429 429
+```
+
+The first ten requests were accepted and the next five received 429. Those five requests were rejected before the signals ran, and all five rejection events appeared in `GET /log`. The temporary server was stopped after verification; ordinary local use remains on port 5000.
+
+The supplied runner saved [results/flood_2026-11-11_1832.md](results/flood_2026-11-11_1832.md). The three sample requests and responses, invalid-input checks, and all new audit entries are in [results/milestone1_verification.json](results/milestone1_verification.json). This was the Milestone 1 flood check, not the supplied attack-set run.
+
+**Decision and rejection logging:** Each new decision contains `timestamp`, `content_id`, `creator_id`, `guess`, `model_score`, `style_score`, `combined_score`, `label`, and `status`. Refused requests are recorded through `audit.log_rejection()` with a reason, HTTP status, route, and remote address. Rejections do not have signal scores because they did not produce a decision.
+
+I also sent three separate pieces of text through the real model and style signal, then checked their returned IDs and all nine decision fields against `/log`:
+
+| Verification submission | HTTP status | Model score | Style score | Combined score | Status |
+|---|---:|---:|---:|---:|---|
+| 1 | 200 | 0.5191 | 0.3546 | 0.4698 | decided |
+| 2 | 200 | 0.1292 | 0.5930 | 0.2684 | decided |
+| 3 | 200 | 0.3603 | 0.1704 | 0.3033 | decided |
+
+For example, this complete decision was recorded:
+
+```json
+{
+  "timestamp": "2026-11-11T23:32:31+00:00",
+  "content_id": "f490c364-f60e-45c5-9e0e-e3a2e534fd91",
+  "creator_id": "unit8_m1_check_4cc9cd41_1",
+  "guess": "unsure",
+  "model_score": 0.5191,
+  "style_score": 0.3546195152889016,
+  "combined_score": 0.46975585458667046,
+  "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+  "status": "decided"
+}
+```
+
+This request was rejected by the limiter:
+
+```json
+{
+  "timestamp": "2026-11-11T23:32:30+00:00",
+  "creator_id": "unit8_m1_flood_4cc9cd41",
+  "event": "rejected",
+  "status": "rejected",
+  "reason": "rate_limited",
+  "http_status": 429,
+  "route": "/submit",
+  "remote_address": "127.0.0.1",
+  "limit": "10 per 1 minute"
+}
+```
+
+This invalid submission was rejected by the route and recorded too:
+
+```json
+{
+  "timestamp": "2026-11-11T23:32:31+00:00",
+  "creator_id": "unit8_m1_bad_4cc9cd41_1",
+  "event": "rejected",
+  "status": "rejected",
+  "reason": "invalid_text",
+  "http_status": 400,
+  "route": "/submit",
+  "remote_address": "127.0.0.1"
+}
+```
+
+Across this verification, the log gained **13 complete decisions, five 429 rejections, and seven 400 rejections**, all visible through `/log`. The 400 checks covered the six original invalid-input cases and too-short text. All earlier audit entries were preserved. The synthetic texts verify service behavior; they do not measure authorship accuracy.
+
+**Repeatable behavior checks:**
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+All five tests in `tests/test_rate_limiting.py` passed. They check the minute limit, the 200-request daily cap across minute-window resets, creator/address counting, logging of refused requests, complete decision entries, and availability of appeals after throttling. These isolated tests use stubbed signal scores and an advanced storage clock for the daily-limit check; the HTTP flood and three submissions above used the real signals and ordinary time.
 
 ---
 

@@ -37,16 +37,33 @@ import scoring
 app = Flask(__name__)
 
 
+def _record_rejection(reason: str, http_status: int, **extra):
+    """Record a refused request even when its body or IDs are malformed."""
+    payload = request.get_json(silent=True)
+    payload = payload if isinstance(payload, dict) else {}
+    creator = payload.get("creator_id")
+    creator = creator if isinstance(creator, str) and creator.strip() else "unknown"
+    content_id = payload.get("content_id")
+    if isinstance(content_id, str) and content_id.strip():
+        extra["content_id"] = content_id
+    return audit.log_rejection(
+        creator_id=creator,
+        reason=reason,
+        http_status=http_status,
+        route=request.path,
+        remote_address=request.remote_addr,
+        **extra,
+    )
+
+
+def _reject(message: str, reason: str, http_status: int = 400):
+    _record_rejection(reason, http_status)
+    return jsonify({"error": message}), http_status
+
+
 # ── Rate limiting — UNIT 8 ────────────────────────────────────────────────────
-# Off until you turn it on. In unit 8, Milestone 1:
-#
-#   1. Set RATE_LIMITING_ENABLED = True in config.py (or AI201_RATE_LIMITS=1)
-#   2. Choose your numbers there
-#   3. Uncomment the @limiter.limit(...) line on /submit below
-#
-# The order doesn't matter. While limiting is off, that decorator is a no-op
-# that quietly does nothing, so uncommenting it early costs you nothing — but
-# it also means no 429 until you've done step 1.
+# Enabled by default in config.py. Only /submit is limited, using the configured
+# per-minute and per-day limits. Rejected requests count toward those limits.
 #
 # The storage backend is preconfigured, which stops Flask-Limiter printing a
 # warning on every start. In-memory is right for one laptop and wrong for
@@ -103,12 +120,9 @@ if config.RATE_LIMITING_ENABLED:
 
         ⚠️ An attack that shows up only as an absence is one you'll never find.
         """
-        payload = request.get_json(silent=True)
-        if not isinstance(payload, dict):
-            payload = {}
-        audit.log_rejection(
-            creator_id=payload.get("creator_id", "unknown"),
-            reason="rate_limited",
+        _record_rejection(
+            "rate_limited",
+            429,
             limit=str(exc.description),
         )
         return jsonify({
@@ -154,7 +168,7 @@ def health():
 # ── YOU BUILD THIS ────────────────────────────────────────────────────────────
 
 @app.post("/submit")
-# @limiter.limit(f"{config.RATE_LIMIT_PER_MINUTE}/minute;{config.RATE_LIMIT_PER_DAY}/day")
+@limiter.limit(f"{config.RATE_LIMIT_PER_MINUTE}/minute;{config.RATE_LIMIT_PER_DAY}/day")
 def submit():
     """
     This function is the main entry point for the Provenance Guard service. It handles incoming submissions of text, analyzes them using both the model and style signals, combines the results, logs the decision, and returns a JSON response with the analysis results.
@@ -164,17 +178,17 @@ def submit():
     payload = request.get_json(silent=True)
 
     if not isinstance(payload, dict):
-        return jsonify({"error": "Valid JSON object is required."}), 400
+        return _reject("Valid JSON object is required.", "invalid_json_object")
 
     text = payload.get("text")
     creator_id = payload.get("creator_id")
 
     # 2. Validate the incoming data
     if not isinstance(text, str) or not text.strip():
-        return jsonify({"error": "Text is required."}), 400
+        return _reject("Text is required.", "invalid_text")
 
     if not isinstance(creator_id, str) or not creator_id.strip():
-        return jsonify({"error": "Creator ID is required."}), 400
+        return _reject("Creator ID is required.", "invalid_creator_id")
 
     # 3. Generate a unique submission ID
     content_id = str(uuid.uuid4())
@@ -183,11 +197,13 @@ def submit():
     try:
         model_score = detector.model_signal(text)
     except ValueError as exc:
-        return jsonify({"error": str(exc)}), 400
+        return _reject(str(exc), "text_too_short")
     except detector.DetectorUnavailable:
-        return jsonify({
-            "error": "The detector is unavailable. Please try again later."
-        }), 503
+        return _reject(
+            "The detector is unavailable. Please try again later.",
+            "detector_unavailable",
+            503,
+        )
     style_score = stylometry.style_signal(text)
 
     # 5. Combine the signals (70% model, 30% style)
@@ -231,17 +247,17 @@ def appeal():
     payload = request.get_json(silent=True)
 
     if not isinstance(payload, dict):
-        return jsonify({"error": "Valid JSON is required."}), 400
+        return _reject("Valid JSON is required.", "invalid_json_object")
 
     content_id = payload.get("content_id")
     reasoning = payload.get("reasoning")
 
     # 2. Validate the input
     if not isinstance(content_id, str) or not content_id.strip():
-        return jsonify({"error": "Content ID is required."}), 400
+        return _reject("Content ID is required.", "invalid_content_id")
 
     if not isinstance(reasoning, str) or not reasoning.strip():
-        return jsonify({"error": "Reasoning is required."}), 400
+        return _reject("Reasoning is required.", "invalid_reasoning")
 
     # 3. Find the original submission
     entries = audit.entries_for(content_id)
@@ -252,7 +268,7 @@ def appeal():
     )
 
     if original is None:
-        return jsonify({"error": "Content not found."}), 404
+        return _reject("Content not found.", "content_not_found", 404)
 
     # 4. Get the original creator ID
     creator_id = original["creator_id"]
@@ -291,7 +307,7 @@ def get_log():
 def main():
     print(f"Provenance Guard on http://{config.HOST}:{config.PORT}")
     print(f"  detector model:  {config.DETECTOR_MODEL}")
-    print(f"  rate limiting:   {'ON' if config.RATE_LIMITING_ENABLED else 'off (unit 8)'}")
+    print(f"  rate limiting:   {'ON' if config.RATE_LIMITING_ENABLED else 'off'}")
     print(f"  audit log:       {config.AUDIT_LOG}")
     print()
     print("Check it's alive:")

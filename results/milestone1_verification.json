@@ -1,0 +1,541 @@
+{
+  "timestamp": "2026-11-11T23:32:31+00:00",
+  "transport": "Real HTTP through a temporary local Werkzeug server; real GPT-2 and style signals",
+  "url": "http://127.0.0.1:62048",
+  "limits": {
+    "per_minute": 10,
+    "per_day": 200
+  },
+  "caller_identity": "creator_id, with remote-address fallback",
+  "health": {
+    "detector_loaded": true,
+    "detector_model": "gpt2",
+    "log_entries": 28,
+    "ok": true,
+    "rate_limiting": true
+  },
+  "flood_report": "results/flood_2026-11-11_1832.md",
+  "flood_status_codes": [
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    429,
+    429,
+    429,
+    429,
+    429
+  ],
+  "submissions": [
+    {
+      "request": {
+        "text": "I enjoy programming. Sometimes it gets frustrating! But when everything finally works, it is worth it.",
+        "creator_id": "unit8_m1_check_4cc9cd41_1"
+      },
+      "http_status": 200,
+      "response": {
+        "confidence": 0.46975585458667046,
+        "content_id": "f490c364-f60e-45c5-9e0e-e3a2e534fd91",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.5191,
+        "style_score": 0.3546195152889016
+      },
+      "audit_entry": {
+        "timestamp": "2026-11-11T23:32:31+00:00",
+        "content_id": "f490c364-f60e-45c5-9e0e-e3a2e534fd91",
+        "creator_id": "unit8_m1_check_4cc9cd41_1",
+        "guess": "unsure",
+        "model_score": 0.5191,
+        "style_score": 0.3546195152889016,
+        "combined_score": 0.46975585458667046,
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "status": "decided"
+      }
+    },
+    {
+      "request": {
+        "text": "The committee reviewed the repair estimates and approved two new windows. The secretary recorded the vote in the minutes.",
+        "creator_id": "unit8_m1_check_4cc9cd41_2"
+      },
+      "http_status": 200,
+      "response": {
+        "confidence": 0.2683529435506864,
+        "content_id": "880b7b60-1c2e-41db-8cf1-a7fb2119be7e",
+        "guess": "human",
+        "label": "Our analysis suggests this writing was likely created by a person.",
+        "model_score": 0.1292,
+        "style_score": 0.5930431451689546
+      },
+      "audit_entry": {
+        "timestamp": "2026-11-11T23:32:31+00:00",
+        "content_id": "880b7b60-1c2e-41db-8cf1-a7fb2119be7e",
+        "creator_id": "unit8_m1_check_4cc9cd41_2",
+        "guess": "human",
+        "model_score": 0.1292,
+        "style_score": 0.5930431451689546,
+        "combined_score": 0.2683529435506864,
+        "label": "Our analysis suggests this writing was likely created by a person.",
+        "status": "decided"
+      }
+    },
+    {
+      "request": {
+        "text": "I missed the bus. Again! My toast was still warm, and my sister laughed so hard she spilled her coffee.",
+        "creator_id": "unit8_m1_check_4cc9cd41_3"
+      },
+      "http_status": 200,
+      "response": {
+        "confidence": 0.303333786407767,
+        "content_id": "61c07f0d-039a-46e4-a6f8-7d0c074f8adf",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.3603,
+        "style_score": 0.17041262135922333
+      },
+      "audit_entry": {
+        "timestamp": "2026-11-11T23:32:31+00:00",
+        "content_id": "61c07f0d-039a-46e4-a6f8-7d0c074f8adf",
+        "creator_id": "unit8_m1_check_4cc9cd41_3",
+        "guess": "unsure",
+        "model_score": 0.3603,
+        "style_score": 0.17041262135922333,
+        "combined_score": 0.303333786407767,
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "status": "decided"
+      }
+    }
+  ],
+  "invalid_submissions": [
+    {
+      "name": "missing text",
+      "request": {
+        "creator_id": "unit8_m1_bad_4cc9cd41_1"
+      },
+      "http_status": 400,
+      "response": {
+        "error": "Text is required."
+      },
+      "audit_entry": {
+        "timestamp": "2026-11-11T23:32:31+00:00",
+        "creator_id": "unit8_m1_bad_4cc9cd41_1",
+        "event": "rejected",
+        "status": "rejected",
+        "reason": "invalid_text",
+        "http_status": 400,
+        "route": "/submit",
+        "remote_address": "127.0.0.1"
+      }
+    },
+    {
+      "name": "empty text",
+      "request": {
+        "text": "",
+        "creator_id": "unit8_m1_bad_4cc9cd41_2"
+      },
+      "http_status": 400,
+      "response": {
+        "error": "Text is required."
+      },
+      "audit_entry": {
+        "timestamp": "2026-11-11T23:32:31+00:00",
+        "creator_id": "unit8_m1_bad_4cc9cd41_2",
+        "event": "rejected",
+        "status": "rejected",
+        "reason": "invalid_text",
+        "http_status": 400,
+        "route": "/submit",
+        "remote_address": "127.0.0.1"
+      }
+    },
+    {
+      "name": "whitespace-only text",
+      "request": {
+        "text": "  ",
+        "creator_id": "unit8_m1_bad_4cc9cd41_3"
+      },
+      "http_status": 400,
+      "response": {
+        "error": "Text is required."
+      },
+      "audit_entry": {
+        "timestamp": "2026-11-11T23:32:31+00:00",
+        "creator_id": "unit8_m1_bad_4cc9cd41_3",
+        "event": "rejected",
+        "status": "rejected",
+        "reason": "invalid_text",
+        "http_status": 400,
+        "route": "/submit",
+        "remote_address": "127.0.0.1"
+      }
+    },
+    {
+      "name": "missing creator ID",
+      "request": {
+        "text": "I enjoy programming. Sometimes it gets frustrating! But when everything finally works, it is worth it."
+      },
+      "http_status": 400,
+      "response": {
+        "error": "Creator ID is required."
+      },
+      "audit_entry": {
+        "timestamp": "2026-11-11T23:32:31+00:00",
+        "creator_id": "unknown",
+        "event": "rejected",
+        "status": "rejected",
+        "reason": "invalid_creator_id",
+        "http_status": 400,
+        "route": "/submit",
+        "remote_address": "127.0.0.1"
+      }
+    },
+    {
+      "name": "non-string text",
+      "request": {
+        "text": 123,
+        "creator_id": "unit8_m1_bad_4cc9cd41_5"
+      },
+      "http_status": 400,
+      "response": {
+        "error": "Text is required."
+      },
+      "audit_entry": {
+        "timestamp": "2026-11-11T23:32:31+00:00",
+        "creator_id": "unit8_m1_bad_4cc9cd41_5",
+        "event": "rejected",
+        "status": "rejected",
+        "reason": "invalid_text",
+        "http_status": 400,
+        "route": "/submit",
+        "remote_address": "127.0.0.1"
+      }
+    },
+    {
+      "name": "non-object JSON",
+      "request": [
+        "not",
+        "an",
+        "object"
+      ],
+      "http_status": 400,
+      "response": {
+        "error": "Valid JSON object is required."
+      },
+      "audit_entry": {
+        "timestamp": "2026-11-11T23:32:31+00:00",
+        "creator_id": "unknown",
+        "event": "rejected",
+        "status": "rejected",
+        "reason": "invalid_json_object",
+        "http_status": 400,
+        "route": "/submit",
+        "remote_address": "127.0.0.1"
+      }
+    },
+    {
+      "name": "too-short text",
+      "request": {
+        "text": "a",
+        "creator_id": "unit8_m1_bad_4cc9cd41_7"
+      },
+      "http_status": 400,
+      "response": {
+        "error": "Text is too short to score — a few sentences at least."
+      },
+      "audit_entry": {
+        "timestamp": "2026-11-11T23:32:31+00:00",
+        "creator_id": "unit8_m1_bad_4cc9cd41_7",
+        "event": "rejected",
+        "status": "rejected",
+        "reason": "text_too_short",
+        "http_status": 400,
+        "route": "/submit",
+        "remote_address": "127.0.0.1"
+      }
+    }
+  ],
+  "audit_entries": [
+    {
+      "timestamp": "2026-11-11T23:32:29+00:00",
+      "content_id": "ba1b46ee-4c75-4162-ba62-3f2838c7e69f",
+      "creator_id": "unit8_m1_flood_4cc9cd41",
+      "guess": "human",
+      "model_score": 0.2588,
+      "style_score": 0.32394353268585874,
+      "combined_score": 0.2783430598057576,
+      "label": "Our analysis suggests this writing was likely created by a person.",
+      "status": "decided"
+    },
+    {
+      "timestamp": "2026-11-11T23:32:30+00:00",
+      "content_id": "e5ba48ce-85b7-4713-bc31-332d7cf8e65c",
+      "creator_id": "unit8_m1_flood_4cc9cd41",
+      "guess": "human",
+      "model_score": 0.2588,
+      "style_score": 0.32394353268585874,
+      "combined_score": 0.2783430598057576,
+      "label": "Our analysis suggests this writing was likely created by a person.",
+      "status": "decided"
+    },
+    {
+      "timestamp": "2026-11-11T23:32:30+00:00",
+      "content_id": "06436ac7-5136-48c7-888f-1cde3a7737e3",
+      "creator_id": "unit8_m1_flood_4cc9cd41",
+      "guess": "human",
+      "model_score": 0.2588,
+      "style_score": 0.32394353268585874,
+      "combined_score": 0.2783430598057576,
+      "label": "Our analysis suggests this writing was likely created by a person.",
+      "status": "decided"
+    },
+    {
+      "timestamp": "2026-11-11T23:32:30+00:00",
+      "content_id": "b6759fcf-49a0-4517-a724-4cdcb927597a",
+      "creator_id": "unit8_m1_flood_4cc9cd41",
+      "guess": "human",
+      "model_score": 0.2588,
+      "style_score": 0.32394353268585874,
+      "combined_score": 0.2783430598057576,
+      "label": "Our analysis suggests this writing was likely created by a person.",
+      "status": "decided"
+    },
+    {
+      "timestamp": "2026-11-11T23:32:30+00:00",
+      "content_id": "c2bb0db0-70df-46d8-abb0-393350ed7e52",
+      "creator_id": "unit8_m1_flood_4cc9cd41",
+      "guess": "human",
+      "model_score": 0.2588,
+      "style_score": 0.32394353268585874,
+      "combined_score": 0.2783430598057576,
+      "label": "Our analysis suggests this writing was likely created by a person.",
+      "status": "decided"
+    },
+    {
+      "timestamp": "2026-11-11T23:32:30+00:00",
+      "content_id": "9aaf5f6d-bd23-4567-af9e-ebcd4f7a16c2",
+      "creator_id": "unit8_m1_flood_4cc9cd41",
+      "guess": "human",
+      "model_score": 0.2588,
+      "style_score": 0.32394353268585874,
+      "combined_score": 0.2783430598057576,
+      "label": "Our analysis suggests this writing was likely created by a person.",
+      "status": "decided"
+    },
+    {
+      "timestamp": "2026-11-11T23:32:30+00:00",
+      "content_id": "19ad17a7-0ccc-4a3d-8b98-46be86d36321",
+      "creator_id": "unit8_m1_flood_4cc9cd41",
+      "guess": "human",
+      "model_score": 0.2588,
+      "style_score": 0.32394353268585874,
+      "combined_score": 0.2783430598057576,
+      "label": "Our analysis suggests this writing was likely created by a person.",
+      "status": "decided"
+    },
+    {
+      "timestamp": "2026-11-11T23:32:30+00:00",
+      "content_id": "7b1ca734-2402-49f8-94c3-cc83436772f6",
+      "creator_id": "unit8_m1_flood_4cc9cd41",
+      "guess": "human",
+      "model_score": 0.2588,
+      "style_score": 0.32394353268585874,
+      "combined_score": 0.2783430598057576,
+      "label": "Our analysis suggests this writing was likely created by a person.",
+      "status": "decided"
+    },
+    {
+      "timestamp": "2026-11-11T23:32:30+00:00",
+      "content_id": "aa7bd5d5-e61f-48ac-bf64-73638b6e4ed0",
+      "creator_id": "unit8_m1_flood_4cc9cd41",
+      "guess": "human",
+      "model_score": 0.2588,
+      "style_score": 0.32394353268585874,
+      "combined_score": 0.2783430598057576,
+      "label": "Our analysis suggests this writing was likely created by a person.",
+      "status": "decided"
+    },
+    {
+      "timestamp": "2026-11-11T23:32:30+00:00",
+      "content_id": "075e9cc0-77c9-46c2-b56c-31afd2078321",
+      "creator_id": "unit8_m1_flood_4cc9cd41",
+      "guess": "human",
+      "model_score": 0.2588,
+      "style_score": 0.32394353268585874,
+      "combined_score": 0.2783430598057576,
+      "label": "Our analysis suggests this writing was likely created by a person.",
+      "status": "decided"
+    },
+    {
+      "timestamp": "2026-11-11T23:32:30+00:00",
+      "creator_id": "unit8_m1_flood_4cc9cd41",
+      "event": "rejected",
+      "status": "rejected",
+      "reason": "rate_limited",
+      "http_status": 429,
+      "route": "/submit",
+      "remote_address": "127.0.0.1",
+      "limit": "10 per 1 minute"
+    },
+    {
+      "timestamp": "2026-11-11T23:32:30+00:00",
+      "creator_id": "unit8_m1_flood_4cc9cd41",
+      "event": "rejected",
+      "status": "rejected",
+      "reason": "rate_limited",
+      "http_status": 429,
+      "route": "/submit",
+      "remote_address": "127.0.0.1",
+      "limit": "10 per 1 minute"
+    },
+    {
+      "timestamp": "2026-11-11T23:32:30+00:00",
+      "creator_id": "unit8_m1_flood_4cc9cd41",
+      "event": "rejected",
+      "status": "rejected",
+      "reason": "rate_limited",
+      "http_status": 429,
+      "route": "/submit",
+      "remote_address": "127.0.0.1",
+      "limit": "10 per 1 minute"
+    },
+    {
+      "timestamp": "2026-11-11T23:32:30+00:00",
+      "creator_id": "unit8_m1_flood_4cc9cd41",
+      "event": "rejected",
+      "status": "rejected",
+      "reason": "rate_limited",
+      "http_status": 429,
+      "route": "/submit",
+      "remote_address": "127.0.0.1",
+      "limit": "10 per 1 minute"
+    },
+    {
+      "timestamp": "2026-11-11T23:32:30+00:00",
+      "creator_id": "unit8_m1_flood_4cc9cd41",
+      "event": "rejected",
+      "status": "rejected",
+      "reason": "rate_limited",
+      "http_status": 429,
+      "route": "/submit",
+      "remote_address": "127.0.0.1",
+      "limit": "10 per 1 minute"
+    },
+    {
+      "timestamp": "2026-11-11T23:32:31+00:00",
+      "content_id": "f490c364-f60e-45c5-9e0e-e3a2e534fd91",
+      "creator_id": "unit8_m1_check_4cc9cd41_1",
+      "guess": "unsure",
+      "model_score": 0.5191,
+      "style_score": 0.3546195152889016,
+      "combined_score": 0.46975585458667046,
+      "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+      "status": "decided"
+    },
+    {
+      "timestamp": "2026-11-11T23:32:31+00:00",
+      "content_id": "880b7b60-1c2e-41db-8cf1-a7fb2119be7e",
+      "creator_id": "unit8_m1_check_4cc9cd41_2",
+      "guess": "human",
+      "model_score": 0.1292,
+      "style_score": 0.5930431451689546,
+      "combined_score": 0.2683529435506864,
+      "label": "Our analysis suggests this writing was likely created by a person.",
+      "status": "decided"
+    },
+    {
+      "timestamp": "2026-11-11T23:32:31+00:00",
+      "content_id": "61c07f0d-039a-46e4-a6f8-7d0c074f8adf",
+      "creator_id": "unit8_m1_check_4cc9cd41_3",
+      "guess": "unsure",
+      "model_score": 0.3603,
+      "style_score": 0.17041262135922333,
+      "combined_score": 0.303333786407767,
+      "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+      "status": "decided"
+    },
+    {
+      "timestamp": "2026-11-11T23:32:31+00:00",
+      "creator_id": "unit8_m1_bad_4cc9cd41_1",
+      "event": "rejected",
+      "status": "rejected",
+      "reason": "invalid_text",
+      "http_status": 400,
+      "route": "/submit",
+      "remote_address": "127.0.0.1"
+    },
+    {
+      "timestamp": "2026-11-11T23:32:31+00:00",
+      "creator_id": "unit8_m1_bad_4cc9cd41_2",
+      "event": "rejected",
+      "status": "rejected",
+      "reason": "invalid_text",
+      "http_status": 400,
+      "route": "/submit",
+      "remote_address": "127.0.0.1"
+    },
+    {
+      "timestamp": "2026-11-11T23:32:31+00:00",
+      "creator_id": "unit8_m1_bad_4cc9cd41_3",
+      "event": "rejected",
+      "status": "rejected",
+      "reason": "invalid_text",
+      "http_status": 400,
+      "route": "/submit",
+      "remote_address": "127.0.0.1"
+    },
+    {
+      "timestamp": "2026-11-11T23:32:31+00:00",
+      "creator_id": "unknown",
+      "event": "rejected",
+      "status": "rejected",
+      "reason": "invalid_creator_id",
+      "http_status": 400,
+      "route": "/submit",
+      "remote_address": "127.0.0.1"
+    },
+    {
+      "timestamp": "2026-11-11T23:32:31+00:00",
+      "creator_id": "unit8_m1_bad_4cc9cd41_5",
+      "event": "rejected",
+      "status": "rejected",
+      "reason": "invalid_text",
+      "http_status": 400,
+      "route": "/submit",
+      "remote_address": "127.0.0.1"
+    },
+    {
+      "timestamp": "2026-11-11T23:32:31+00:00",
+      "creator_id": "unknown",
+      "event": "rejected",
+      "status": "rejected",
+      "reason": "invalid_json_object",
+      "http_status": 400,
+      "route": "/submit",
+      "remote_address": "127.0.0.1"
+    },
+    {
+      "timestamp": "2026-11-11T23:32:31+00:00",
+      "creator_id": "unit8_m1_bad_4cc9cd41_7",
+      "event": "rejected",
+      "status": "rejected",
+      "reason": "text_too_short",
+      "http_status": 400,
+      "route": "/submit",
+      "remote_address": "127.0.0.1"
+    }
+  ],
+  "checks": {
+    "minute_flood": "10 accepted, 5 rejected",
+    "complete_decision_entries": 13,
+    "logged_429_rejections": 5,
+    "logged_400_rejections": 7,
+    "all_new_entries_visible_in_get_log": true,
+    "original_audit_history_preserved": true
+  }
+}
