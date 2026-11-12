@@ -1,0 +1,16 @@
+{
+  "checked_on": "2026-11-11 (America/New_York)",
+  "source_url": "https://ca.reddit.com/r/running/comments/4jazw5/achievements_for_saturday_may_14_2016/",
+  "thread_date": "2016-05-14",
+  "matches": [
+    {
+      "sample_id": "human-02",
+      "match": "Exact passage found in a comment in this thread."
+    },
+    {
+      "sample_id": "human-03",
+      "match": "Supplied passage is an exact initial excerpt of a longer comment in this thread."
+    }
+  ],
+  "scope": "Source matches for two passages only; the remaining 18 origins and independent human-authorship verification are not established by this check."
+}

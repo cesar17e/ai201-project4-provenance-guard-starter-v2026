@@ -1,118 +1,45 @@
-"""
-What your test runs. ← UNIT 8, MILESTONE 3
+"""Evaluation plans for the five original criteria; no service settings change."""
 
-Each of your five criteria needs something run against it. A criterion about
-false positives needs your own writing. One about label coverage needs inputs
-across the score range. One about the appeal path needs a real content_id.
+from pathlib import Path
+import json
 
-Working that out is Milestone 3's first step, and this file is where you write
-it down. `run_eval.py` runs everything here three times.
-
-Two are filled in as examples. Replace them with what your criteria actually
-need — these are a shape, not a set.
-
-A scenario carries **either** of these:
-
-    "texts"   a list of strings. Each is sent as {"text": ..., "creator_id": ...}
-              with a creator_id made up for you. Use this for most criteria.
-
-    "bodies"  a list of whole request bodies, sent exactly as written. Use this
-              when the malformed request IS the point — empty text, no `text`
-              field at all, something enormous. A bad-input criterion needs it,
-              because you cannot express "the field is missing" as a string.
-"""
-
+HUMAN_SAMPLES = Path(__file__).parent / 'evaluation' / 'human_samples.json'
+VALID_TEXT = (
+    'I missed the bus. Again! My toast was still warm, and my sister laughed '
+    'so hard she spilled her coffee. We decided to walk instead.'
+)
 SCENARIOS = [
-    {
-        "name": "my own writing",
-        "criterion": 1,
-        # ⚠️ PUT YOUR OWN WRITING HERE. Not AI text, not a sample from the web —
-        # things you actually wrote. This is the criterion that matters most and
-        # it's meaningless with someone else's prose.
-        "texts": [
-            "REPLACE ME with a paragraph you wrote yourself.",
-            "REPLACE ME with another one. Ten pieces is the usual number.",
-        ],
-    },
-    {
-        "name": "label coverage",
-        "criterion": 2,
-        # Inputs spread across your score range, so you can check all three
-        # labels are actually reachable.
-        "texts": [
-            "REPLACE ME with something you're confident is AI-generated.",
-            "REPLACE ME with something you're confident is human-written.",
-            "REPLACE ME with something genuinely borderline.",
-        ],
-    },
-    # A bad-input criterion looks like this. Uncomment and adjust if that's one
-    # of your five — these are raw request bodies, sent exactly as written.
-    #
-    # {
-    #     "name": "bad input",
-    #     "criterion": 3,
-    #     "bodies": [
-    #         {"text": "", "creator_id": "eval_bad_empty"},
-    #         {"creator_id": "eval_bad_missing"},          # no text field at all
-    #         {"text": "word " * 50000, "creator_id": "eval_bad_huge"},
-    #         {"text": None, "creator_id": "eval_bad_null"},
-    #     ],
-    # },
-
-    # TODO: add what your remaining criteria need.
-    #
-    # A criterion about the appeal path can't be tested by sending text alone;
-    # it needs a submission first and then an appeal against the content_id
-    # that came back. You'll need to test that one by hand, or extend this file
-    # and run_eval.py to do it. Saying which you did is part of the write-up.
+    {'criterion': 1, 'name': 'False-positive rate', 'target': 'At most 1 high-confidence AI label among 20 verified human samples', 'kind': 'human'},
+    {'criterion': 2, 'name': 'Label coverage', 'target': 'All three labels; complete, unambiguous 0–1 mapping including boundaries', 'kind': 'labels'},
+    {'criterion': 3, 'name': 'Appeal handling', 'target': '10/10 appeals recorded and under_review for 10 existing IDs', 'kind': 'appeals'},
+    {'criterion': 4, 'name': 'Invalid input handling', 'target': '6/6 invalid cases return 4xx without a server crash', 'kind': 'invalid'},
+    {'criterion': 5, 'name': 'Audit logging', 'target': '10/10 valid submissions have matching audit entries and required fields', 'kind': 'audit'},
 ]
 
 
-def validate() -> list[str]:
-    """
-    Complain about anything malformed, before a long run rather than during.
-
-    A "bodies" scenario is deliberately exempt from the empty check — an empty
-    string is the whole point of a bad-input case, and refusing to run one
-    would make that criterion untestable.
-    """
+def load_human_samples(path=HUMAN_SAMPLES, allow_unverified=False):
+    """Validate dataset shape and supplied provenance, not the truth of authorship."""
+    path = Path(path)
+    if not path.exists():
+        return [], [f'Missing {path}: supply 20 verified human samples (see evaluation/README.md).']
+    try:
+        data = json.loads(path.read_text(encoding='utf-8'))
+    except (ValueError, OSError) as exc:
+        return [], [str(exc)]
+    samples = data.get('samples') if isinstance(data, dict) else None
+    if not isinstance(samples, list) or len(samples) != 20:
+        return [], ['The dataset must contain a samples list with exactly 20 entries.']
     problems = []
-    for i, scenario in enumerate(SCENARIOS, 1):
-        if not scenario.get("name"):
-            problems.append(f"scenario {i} has no name")
-
-        texts = scenario.get("texts")
-        bodies = scenario.get("bodies")
-
-        if texts and bodies:
-            problems.append(
-                f"scenario {i} ('{scenario.get('name')}') has both texts and "
-                f"bodies — pick one"
-            )
+    for index, sample in enumerate(samples, 1):
+        if not isinstance(sample, dict):
+            problems.append(f'Sample {index} must be an object.')
             continue
-
-        if bodies:
-            for j, body in enumerate(bodies, 1):
-                if not isinstance(body, dict):
-                    problems.append(
-                        f"scenario {i}, body {j} is not a dict — bodies are whole "
-                        f"request bodies, like {{'text': '', 'creator_id': 'x'}}"
-                    )
-            continue
-
-        if not texts:
-            problems.append(f"scenario {i} has no texts and no bodies")
-            continue
-
-        for j, text in enumerate(texts, 1):
-            if not str(text).strip():
-                problems.append(
-                    f"scenario {i}, text {j} is empty — if an empty submission is what "
-                    f"you're testing, use 'bodies' instead of 'texts'"
-                )
-            elif str(text).startswith("REPLACE ME"):
-                problems.append(
-                    f"scenario {i} ('{scenario.get('name')}'), text {j} is still "
-                    f"the placeholder"
-                )
-    return problems
+        for field in ('id', 'text', 'source', 'verified_by', 'verification'):
+            if not isinstance(sample.get(field), str) or not sample[field].strip():
+                problems.append(f'Sample {index} needs a nonempty {field}.')
+        if sample.get('verified_human') is not True and not (allow_unverified and sample.get('verified_human') is False):
+            problems.append(f'Sample {index} needs verified_human: true after actual verification.')
+    if not problems:
+        if len({s['id'] for s in samples}) != 20 or len({s['text'].strip() for s in samples}) != 20:
+            problems.append('Samples need distinct IDs and distinct texts; do not repeat one passage to reach 20.')
+    return ([], problems) if problems else (samples, [])

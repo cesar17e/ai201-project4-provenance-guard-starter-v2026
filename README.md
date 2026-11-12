@@ -198,7 +198,7 @@ The latest event for this content ID is `under_review`. The earlier `decided` en
 
 <!-- ═══════════════════════ UNIT 8 — THE TEST ═══════════════════════ -->
 
-> Unit 8 work is recorded below. Milestones 1 and 2 are implemented and recorded below. The criterion trials, diagnoses, improvement, and final reflection will be completed during the remaining milestones.
+> Unit 8 work is recorded below. Milestones 1 and 2 are implemented and recorded below. Three-trial measurements for all five criteria are recorded; criterion 1 remains provisional pending independent provenance for the supplied human-labelled dataset. Diagnoses, the improvement, and the final reflection remain to be completed.
 
 
 ---
@@ -567,46 +567,449 @@ FP01 alone received unsure at **0.5886**. Repeating that same human-origin parag
 
 This is the outcome I would least want to explain to a writer: repeating their own words changed an uncertain result into an AI accusation. The request completed without a crash, but the authorship judgment still failed. No scoring or validation fix has been made in response to these results; diagnosis and the single measured improvement come in later milestones.
 
-These attack results do not yet supply the five-criterion, three-trial evaluation. In particular, eight dedicated staff human cases and a repetition stress case do not replace the 20 independently verified human samples required by my original false-positive criterion.
+The attack run is separate from the five-criterion, three-trial evaluation documented below. Its eight dedicated staff human cases and a repetition stress case do not replace the 20 independently verified human samples required by my original false-positive criterion.
 
 ---
 
 ## Run Log and Verdicts
 
-<!-- Your five criteria across three trials. `run_eval.py --label before`. -->
+**Before evaluation — provenance provisional:** All five criteria were exercised across three actual trials. The 20 user-supplied passages were labelled human-written by the user, who reports that many came from Reddit running/marathon discussions. Source matches for two passages are recorded in [evaluation/source_checks.json](evaluation/source_checks.json); the remaining 18 sources and full independent authorship verification are not established. Criterion 1 is therefore PROVISIONAL, not a final verified false-positive verdict.
 
-| Criterion | Target | Run 1 | Run 2 | Run 3 | Verdict |
-|---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |
-
-**Real output from one trial**, pasted as text, naming the file and function
-that produced it:
-
-```json
-
+```bash
+python run_eval.py --local --label before --allow-unverified-human-samples
 ```
 
-**Diagnoses**
+Full requests, responses, samples, source hashes, and audit snapshots are saved in [results/eval_2026-11-11_194325_before_partial_f42a539c.json](results/eval_2026-11-11_194325_before_partial_f42a539c.json), with a [standalone report](results/eval_2026-11-11_194325_before_partial_f42a539c.md). The earlier partial run with criterion 1 PENDING is retained as historical evidence.
 
-<!-- For each miss AND each broken attack: the stage and the mechanism.
+| Criterion | Original target | Run 1 | Run 2 | Run 3 | Computed verdict |
+|---|---|---|---|---|---|
+| 1. False-positive rate | At most 1 high-confidence AI label among 20 verified human samples | 0/20 high-confidence AI; 20/20 scored | 0/20 high-confidence AI; 20/20 scored | 0/20 high-confidence AI; 20/20 scored | PROVISIONAL |
+| 2. Label coverage | All three labels; complete, unambiguous 0–1 mapping including boundaries | 3/3 labels; 1009/1009 mappings | 3/3 labels; 1009/1009 mappings | 3/3 labels; 1009/1009 mappings | MET |
+| 3. Appeal handling | 10/10 appeals recorded and under_review for 10 existing IDs | 10/10 appeals recorded and under_review | 10/10 appeals recorded and under_review | 10/10 appeals recorded and under_review | MET |
+| 4. Invalid input handling | 6/6 invalid cases return 4xx without a server crash | 6/6 returned 4xx | 6/6 returned 4xx | 6/6 returned 4xx | MET |
+| 5. Audit logging | 10/10 valid submissions have matching audit entries and required fields | 10/10 matching audit entries | 10/10 matching audit entries | 10/10 matching audit entries | MET |
 
-     Your service has five stages: the route, signal one, signal two, the
-     combining rule, and the label mapping.
+**Criterion 1 numeric result:** 0/20, 0/20, 0/20 high-confidence AI labels. The conditional numeric verdict is MET if the supplied human labels are established. This does not by itself establish human authorship or independently verify the Reddit sources. The original target of at most one false positive among twenty independently verified human samples is unchanged.
 
-     Not a diagnosis:  "The evasion attacks got through."
-     A diagnosis:      "Four evasion inputs got through. All four had typos
-                        added to AI-generated text. My second signal measures
-                        word variety, and typos raise word variety — so it read
-                        them as more human. My combining rule weights that
-                        signal at 0.6, so it dragged the whole score down."
+Each trial returned **7 human labels and 13 unsure labels**. All three sets of model, style, and combined scores matched exactly. Zero high-confidence AI flags does not mean all 20 passages were positively identified as human.
 
-     Look for a pattern. Five failures on one signal is one problem, not five. -->
+The passages are stored without rewriting in [evaluation/human_samples.json](evaluation/human_samples.json). `verified_human: false` means the independent provenance is unconfirmed, not that a passage is AI-generated. The format and verification requirements are described in [evaluation/README.md](evaluation/README.md). Once provenance is established, rerun without the provisional flag and use the same dataset for the after comparison.
 
+The real model and style signal were used, with rate limiting enabled and no counter resets between trials. Each test writer made at most three submissions. No requests received 429. Identical scores across the repeats are expected because both signals are deterministic. Criterion 2 directly exercises the local `scoring.py::score_to_label` from this same checkout; each trial checks 1,009 scores including exact thresholds and adjacent floating-point values. The ordered branches partition the entire interval; the finite grid supports that coverage argument rather than enumerating every real number.
 
+All **13 regression tests** passed with `python -m unittest discover -s tests -v`. The new evaluator tests cover dataset validation, repeated appeal/audit checks, numeric target failures, rate-limit interference, and the distinction between provisional labels and independently verified provenance. These isolated regression tests use synthetic fixtures; the recorded evaluation above used the actual supplied passages and real detection signals.
+
+### Actual output from one trial per criterion
+
+#### 1. False-positive rate
+
+Producer: `run_eval.py::Evaluation.run`.
+
+```json
+{
+  "trial": 1,
+  "producer": "run_eval.py::Evaluation.run",
+  "state": "PROVISIONAL",
+  "conditional_verdict": "MET",
+  "provenance_verified": false,
+  "measurement": "0/20 high-confidence AI; 20/20 scored",
+  "output": {
+    "false_positives_assuming_human_labels": 0,
+    "scored": 20,
+    "target_maximum": 1
+  },
+  "sample_results": [
+    {
+      "sample_id": "human-01",
+      "http_status": 200,
+      "guess": "unsure",
+      "confidence": 0.35178550466725317
+    },
+    {
+      "sample_id": "human-02",
+      "http_status": 200,
+      "guess": "unsure",
+      "confidence": 0.3504045584939489
+    },
+    {
+      "sample_id": "human-03",
+      "http_status": 200,
+      "guess": "unsure",
+      "confidence": 0.35097101010101006
+    },
+    {
+      "sample_id": "human-04",
+      "http_status": 200,
+      "guess": "human",
+      "confidence": 0.28197485294117647
+    },
+    {
+      "sample_id": "human-05",
+      "http_status": 200,
+      "guess": "unsure",
+      "confidence": 0.3485194117647059
+    },
+    {
+      "sample_id": "human-06",
+      "http_status": 200,
+      "guess": "unsure",
+      "confidence": 0.6499472727272727
+    },
+    {
+      "sample_id": "human-07",
+      "http_status": 200,
+      "guess": "unsure",
+      "confidence": 0.5119736898395721
+    },
+    {
+      "sample_id": "human-08",
+      "http_status": 200,
+      "guess": "unsure",
+      "confidence": 0.31809067281606074
+    },
+    {
+      "sample_id": "human-09",
+      "http_status": 200,
+      "guess": "unsure",
+      "confidence": 0.5202646153846153
+    },
+    {
+      "sample_id": "human-10",
+      "http_status": 200,
+      "guess": "human",
+      "confidence": 0.1384672029501033
+    },
+    {
+      "sample_id": "human-11",
+      "http_status": 200,
+      "guess": "unsure",
+      "confidence": 0.48955666666666664
+    },
+    {
+      "sample_id": "human-12",
+      "http_status": 200,
+      "guess": "human",
+      "confidence": 0.25690972972972975
+    },
+    {
+      "sample_id": "human-13",
+      "http_status": 200,
+      "guess": "human",
+      "confidence": 0.20243896551724136
+    },
+    {
+      "sample_id": "human-14",
+      "http_status": 200,
+      "guess": "human",
+      "confidence": 0.14843639365736047
+    },
+    {
+      "sample_id": "human-15",
+      "http_status": 200,
+      "guess": "human",
+      "confidence": 0.25305778354705866
+    },
+    {
+      "sample_id": "human-16",
+      "http_status": 200,
+      "guess": "unsure",
+      "confidence": 0.37236043478260866
+    },
+    {
+      "sample_id": "human-17",
+      "http_status": 200,
+      "guess": "unsure",
+      "confidence": 0.5730299999999999
+    },
+    {
+      "sample_id": "human-18",
+      "http_status": 200,
+      "guess": "human",
+      "confidence": 0.1933313043478261
+    },
+    {
+      "sample_id": "human-19",
+      "http_status": 200,
+      "guess": "unsure",
+      "confidence": 0.6161704347826087
+    },
+    {
+      "sample_id": "human-20",
+      "http_status": 200,
+      "guess": "unsure",
+      "confidence": 0.5478574383301708
+    }
+  ]
+}
+```
+
+#### 2. Label coverage
+
+Producer: `run_eval.py::Evaluation.run` and `scoring.py::score_to_label`.
+
+```json
+{
+  "trial": 1,
+  "producer": "run_eval.py::Evaluation.run",
+  "state": "MET",
+  "measurement": "3/3 labels; 1009/1009 mappings",
+  "output": {
+    "producer": "scoring.py::score_to_label",
+    "boundaries": [
+      {
+        "score": 0.0,
+        "guess": "human",
+        "label": "Our analysis suggests this writing was likely created by a person.",
+        "expected": "human"
+      },
+      {
+        "score": 0.3,
+        "guess": "human",
+        "label": "Our analysis suggests this writing was likely created by a person.",
+        "expected": "human"
+      },
+      {
+        "score": 0.30000000000000004,
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "expected": "unsure"
+      },
+      {
+        "score": 0.7999999999999999,
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "expected": "unsure"
+      },
+      {
+        "score": 0.8,
+        "guess": "ai",
+        "label": "Our analysis suggests this writing may have been AI-generated. This is not a definitive determination, and you can request a review.",
+        "expected": "ai"
+      },
+      {
+        "score": 1.0,
+        "guess": "ai",
+        "label": "Our analysis suggests this writing may have been AI-generated. This is not a definitive determination, and you can request a review.",
+        "expected": "ai"
+      },
+      {
+        "score": 0.51,
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "expected": "unsure"
+      },
+      {
+        "score": 0.95,
+        "guess": "ai",
+        "label": "Our analysis suggests this writing may have been AI-generated. This is not a definitive determination, and you can request a review.",
+        "expected": "ai"
+      }
+    ],
+    "failures": [],
+    "checked": 1009,
+    "coverage_argument": "Ordered inclusive outer branches plus the middle return partition the entire valid interval."
+  }
+}
+```
+
+#### 3. Appeal handling
+
+Producer: `run_eval.py::Evaluation.run`.
+
+```json
+{
+  "trial": 1,
+  "producer": "run_eval.py::Evaluation.run",
+  "state": "MET",
+  "measurement": "10/10 appeals recorded and under_review",
+  "output": {
+    "passed": 10,
+    "required": 10
+  },
+  "example_appeal": {
+    "method": "POST",
+    "route": "/appeal",
+    "request": {
+      "content_id": "82abe88d-1e9a-4e7a-b338-f5adc76e6d2f",
+      "reasoning": "Criterion 3 trial 1: please review this verification decision."
+    },
+    "http_status": 200,
+    "response": {
+      "content_id": "82abe88d-1e9a-4e7a-b338-f5adc76e6d2f",
+      "message": "Your appeal has been recorded.",
+      "status": "under_review"
+    }
+  },
+  "matching_audit_entries": [
+    {
+      "combined_score": 0.31286128080569203,
+      "content_id": "82abe88d-1e9a-4e7a-b338-f5adc76e6d2f",
+      "creator_id": "eval_f42a539c_c3_1",
+      "guess": "unsure",
+      "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+      "model_score": 0.3644,
+      "status": "decided",
+      "style_score": 0.1926042693523069,
+      "timestamp": "2026-11-12T00:35:45+00:00"
+    },
+    {
+      "content_id": "82abe88d-1e9a-4e7a-b338-f5adc76e6d2f",
+      "creator_id": "eval_f42a539c_c3_1",
+      "event": "appeal",
+      "reasoning": "Criterion 3 trial 1: please review this verification decision.",
+      "status": "under_review",
+      "timestamp": "2026-11-12T00:39:23+00:00"
+    }
+  ]
+}
+```
+
+#### 4. Invalid input handling
+
+Producer: `run_eval.py::Evaluation.run`.
+
+```json
+{
+  "trial": 1,
+  "producer": "run_eval.py::Evaluation.run",
+  "state": "MET",
+  "measurement": "6/6 returned 4xx",
+  "output": {
+    "http_statuses": [
+      400,
+      400,
+      400,
+      400,
+      400,
+      400
+    ]
+  },
+  "invalid_requests_and_responses": [
+    {
+      "method": "POST",
+      "route": "/submit",
+      "request": {
+        "creator_id": "eval_f42a539c_bad1"
+      },
+      "http_status": 400,
+      "response": {
+        "error": "Text is required."
+      }
+    },
+    {
+      "method": "POST",
+      "route": "/submit",
+      "request": {
+        "text": "",
+        "creator_id": "eval_f42a539c_bad2"
+      },
+      "http_status": 400,
+      "response": {
+        "error": "Text is required."
+      }
+    },
+    {
+      "method": "POST",
+      "route": "/submit",
+      "request": {
+        "text": "   ",
+        "creator_id": "eval_f42a539c_bad3"
+      },
+      "http_status": 400,
+      "response": {
+        "error": "Text is required."
+      }
+    },
+    {
+      "method": "POST",
+      "route": "/submit",
+      "request": {
+        "text": "I missed the bus. Again! My toast was still warm, and my sister laughed so hard she spilled her coffee. We decided to walk instead."
+      },
+      "http_status": 400,
+      "response": {
+        "error": "Creator ID is required."
+      }
+    },
+    {
+      "method": "POST",
+      "route": "/submit",
+      "request": {
+        "text": 123,
+        "creator_id": "eval_f42a539c_bad5"
+      },
+      "http_status": 400,
+      "response": {
+        "error": "Text is required."
+      }
+    },
+    {
+      "method": "POST",
+      "route": "/submit",
+      "request": [
+        "not",
+        "an",
+        "object"
+      ],
+      "http_status": 400,
+      "response": {
+        "error": "Valid JSON object is required."
+      }
+    }
+  ]
+}
+```
+
+#### 5. Audit logging
+
+Producer: `run_eval.py::Evaluation.run`.
+
+```json
+{
+  "trial": 1,
+  "producer": "run_eval.py::Evaluation.run",
+  "state": "MET",
+  "measurement": "10/10 matching audit entries",
+  "output": {
+    "passed": 10,
+    "required": 10
+  },
+  "example_submission": {
+    "method": "POST",
+    "route": "/submit",
+    "request": {
+      "text": "I missed the bus. Again! My toast was still warm, and my sister laughed so hard she spilled her coffee. We decided to walk instead. This is example 1.",
+      "creator_id": "eval_f42a539c_c5_1"
+    },
+    "http_status": 200,
+    "response": {
+      "confidence": 0.31286128080569203,
+      "content_id": "640990ee-5a73-4ade-9ece-813a7d45230c",
+      "guess": "unsure",
+      "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+      "model_score": 0.3644,
+      "style_score": 0.1926042693523069
+    }
+  },
+  "matching_audit_entries": [
+    {
+      "combined_score": 0.31286128080569203,
+      "content_id": "640990ee-5a73-4ade-9ece-813a7d45230c",
+      "creator_id": "eval_f42a539c_c5_1",
+      "guess": "unsure",
+      "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+      "model_score": 0.3644,
+      "status": "decided",
+      "style_score": 0.1926042693523069,
+      "timestamp": "2026-11-12T00:41:11+00:00"
+    }
+  ]
+}
+```
+
+### Diagnoses
+
+The numeric measurements meet their targets on the supplied labels, with human provenance still provisional. Review of the verdicts, diagnoses for the broken attacks, and cross-failure patterns are reserved for the next phase. No signal, weight, threshold, label, validation rule, or original criterion was changed.
 
 ---
 
