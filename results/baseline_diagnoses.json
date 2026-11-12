@@ -1,0 +1,473 @@
+{
+  "evidence_files": [
+    "results/attack_run_2026-11-11_1852_before.json",
+    "results/attack_run_2026-11-11_1852_before_reviewed.json",
+    "results/eval_2026-11-11_194325_before_partial_f42a539c.json"
+  ],
+  "method": "Offline diagnosis of saved observations and unchanged code; no new inference or application changes.",
+  "criteria_review": [
+    {
+      "criterion": 1,
+      "name": "False-positive rate",
+      "target": "At most 1 high-confidence AI label among 20 verified human samples",
+      "trial_measurements": [
+        "0/20 high-confidence AI; 20/20 scored",
+        "0/20 high-confidence AI; 20/20 scored",
+        "0/20 high-confidence AI; 20/20 scored"
+      ],
+      "reviewed_verdict": "PROVISIONAL",
+      "reason": "PROVISIONAL. Every measured trial had 0/20 AI flags, with 7 human and 13 unsure labels. The numeric <=1 target would be met on the supplied labels, but 20 independently verified human origins have not been established. This is an evaluation-dataset limitation, not a diagnosed detector false positive and not an unmeasurable criterion. Keep the original criterion unchanged."
+    },
+    {
+      "criterion": 2,
+      "name": "Label coverage",
+      "target": "All three labels; complete, unambiguous 0–1 mapping including boundaries",
+      "trial_measurements": [
+        "3/3 labels; 1009/1009 mappings",
+        "3/3 labels; 1009/1009 mappings",
+        "3/3 labels; 1009/1009 mappings"
+      ],
+      "reviewed_verdict": "MET",
+      "reason": "MET. Each of three trials reached all three labels and passed 1,009 controlled-score checks, including exact threshold equality and adjacent values. The ordered outer branches and middle return partition the valid interval. This verifies mapping behavior, not authorship accuracy."
+    },
+    {
+      "criterion": 3,
+      "name": "Appeal handling",
+      "target": "10/10 appeals recorded and under_review for 10 existing IDs",
+      "trial_measurements": [
+        "10/10 appeals recorded and under_review",
+        "10/10 appeals recorded and under_review",
+        "10/10 appeals recorded and under_review"
+      ],
+      "reviewed_verdict": "MET",
+      "reason": "MET. Each trial created ten submissions and ten appeals against their returned IDs. All ten appeal responses and audit histories confirmed recorded reasoning and under_review. This is a result for the tested valid flows, not a claim of a production authorization system."
+    },
+    {
+      "criterion": 4,
+      "name": "Invalid input handling",
+      "target": "6/6 invalid cases return 4xx without a server crash",
+      "trial_measurements": [
+        "6/6 returned 4xx",
+        "6/6 returned 4xx",
+        "6/6 returned 4xx"
+      ],
+      "reviewed_verdict": "MET",
+      "reason": "MET. All six specified invalid cases returned 400 in each trial; none returned 429 or 5xx. Additional malformed-prose attack failures are outside these six original cases, so they do not silently change this target or turn a measured pass into a miss."
+    },
+    {
+      "criterion": 5,
+      "name": "Audit logging",
+      "target": "10/10 valid submissions have matching audit entries and required fields",
+      "trial_measurements": [
+        "10/10 matching audit entries",
+        "10/10 matching audit entries",
+        "10/10 matching audit entries"
+      ],
+      "reviewed_verdict": "MET",
+      "reason": "MET. Every trial had ten matching decision entries with the required fields, corresponding submission IDs, creator IDs, component scores, and combined scores. Unique IDs and timestamps naturally differ between trials; the measured outcomes and repeated-input scores remain consistent."
+    }
+  ],
+  "attack_diagnoses": [
+    {
+      "attack_id": "EV01",
+      "stages": [
+        "signal one",
+        "combining rule"
+      ],
+      "mechanism": "The typo-bearing AI passage has a model score of 0.1635, versus a style score of 0.5891. The 70% model weight drives the combination to 0.2912, below the human boundary. Style actually pushes the score upward. Vocabulary diversity is high (0.8706), but the recorded comparison does not prove that typos caused the model score to fall; no clean matched model control was run.",
+      "evidence": {
+        "model_score": 0.1635,
+        "style_score": 0.5891425991871745,
+        "combined_score": 0.2911927797561523,
+        "guess": "human",
+        "content_id": "5b73c6b0-6fab-450e-9e48-5402cef99a17",
+        "word_count": 85,
+        "sentence_count": 7,
+        "sentence_length_spread": 0.16073648260328782,
+        "type_token_ratio": 0.8705882352941177,
+        "punctuation_density": 0.0167427701674277,
+        "style_rule": "normalized weighted features",
+        "model_contribution": 0.11445,
+        "style_contribution": 0.17674277975615235
+      },
+      "evidence_scope": "Recorded model scores, recomputed unchanged style features, and exact rule decomposition. No new model or clean-control runs."
+    },
+    {
+      "attack_id": "EV02",
+      "stages": [
+        "signal two",
+        "combining rule",
+        "label mapping"
+      ],
+      "mechanism": "Sentence-length spread is 0.8492. Inverting it gives only 0.1508 on the AI-like spread component; vocabulary diversity is 0.8242. These shape features yield style 0.3118. Averaging it with model 0.5943 gives 0.5096, inside the unsure band. This avoids an AI flag under the stated evasion policy; it is not a broken mapping or an affirmative human decision.",
+      "evidence": {
+        "model_score": 0.5943,
+        "style_score": 0.31184250818656695,
+        "combined_score": 0.50956275245597,
+        "guess": "unsure",
+        "content_id": "84881944-6b39-40ec-96d7-2ff907ab4d6f",
+        "word_count": 91,
+        "sentence_count": 13,
+        "sentence_length_spread": 0.84916926191081,
+        "type_token_ratio": 0.8241758241758241,
+        "punctuation_density": 0.02401129943502825,
+        "style_rule": "normalized weighted features",
+        "model_contribution": 0.41601,
+        "style_contribution": 0.09355275245597008
+      },
+      "evidence_scope": "Recorded model scores, recomputed unchanged style features, and exact rule decomposition. No new model or clean-control runs."
+    },
+    {
+      "attack_id": "EV03",
+      "stages": [
+        "signal two",
+        "combining rule",
+        "label mapping"
+      ],
+      "mechanism": "The quotation-bearing input has vocabulary diversity 0.8396, which becomes 0.1604 in the AI-like vocabulary component. Style is 0.4772, below model 0.6662, so the combination falls to 0.6095 and receives unsure. The style signal measures the combined text shape rather than separating quoted material; a quote-free model comparison was not recorded.",
+      "evidence": {
+        "model_score": 0.6662,
+        "style_score": 0.4771687107656484,
+        "combined_score": 0.6094906132296944,
+        "guess": "unsure",
+        "content_id": "ac4c9bdf-6c5c-4faf-98c7-809baf6eb61f",
+        "word_count": 106,
+        "sentence_count": 11,
+        "sentence_length_spread": 0.4433761537006082,
+        "type_token_ratio": 0.839622641509434,
+        "punctuation_density": 0.02064516129032258,
+        "style_rule": "normalized weighted features",
+        "model_contribution": 0.46634,
+        "style_contribution": 0.1431506132296945
+      },
+      "evidence_scope": "Recorded model scores, recomputed unchanged style features, and exact rule decomposition. No new model or clean-control runs."
+    },
+    {
+      "attack_id": "EV04",
+      "stages": [
+        "signal one",
+        "combining rule",
+        "label mapping"
+      ],
+      "mechanism": "The unusual-word input produces moderate model and style scores, 0.6114 and 0.5796. Their 70/30 combination is 0.6018, below the 0.80 AI boundary. Predictability is an imperfect proxy for origin, and the broad band leaves this known-AI input unsure. The target description is not proof that the unusual words raised perplexity relative to a control.",
+      "evidence": {
+        "model_score": 0.6114,
+        "style_score": 0.5795625062416837,
+        "combined_score": 0.6018487518725051,
+        "guess": "unsure",
+        "content_id": "2b4be714-cc28-4944-b8da-75bf8df39d37",
+        "word_count": 86,
+        "sentence_count": 7,
+        "sentence_length_spread": 0.17403057612902054,
+        "type_token_ratio": 0.872093023255814,
+        "punctuation_density": 0.0182370820668693,
+        "style_rule": "normalized weighted features",
+        "model_contribution": 0.42798,
+        "style_contribution": 0.1738687518725051
+      },
+      "evidence_scope": "Recorded model scores, recomputed unchanged style features, and exact rule decomposition. No new model or clean-control runs."
+    },
+    {
+      "attack_id": "EV05",
+      "stages": [
+        "signal one",
+        "signal two",
+        "label mapping"
+      ],
+      "mechanism": "The heavily edited AI-origin text scores 0.3212 on the model and 0.3849 on style. Spread 0.6753 and vocabulary diversity 0.7683 help keep the style score low. Both signals see the current language and shape rather than the editing history; their combination 0.3403 is unsure. No signal can reconstruct authorship history from these measurements alone.",
+      "evidence": {
+        "model_score": 0.3212,
+        "style_score": 0.3849058590898291,
+        "combined_score": 0.3403117577269487,
+        "guess": "unsure",
+        "content_id": "b8968ddc-6646-41d8-bf1f-e65a8d4a8b9e",
+        "word_count": 82,
+        "sentence_count": 7,
+        "sentence_length_spread": 0.6752618634101039,
+        "type_token_ratio": 0.7682926829268293,
+        "punctuation_density": 0.030434782608695653,
+        "style_rule": "normalized weighted features",
+        "model_contribution": 0.22483999999999998,
+        "style_contribution": 0.11547175772694873
+      },
+      "evidence_scope": "Recorded model scores, recomputed unchanged style features, and exact rule decomposition. No new model or clean-control runs."
+    },
+    {
+      "attack_id": "EV06",
+      "stages": [
+        "signal two",
+        "combining rule",
+        "label mapping"
+      ],
+      "mechanism": "Measured sentence-length spread is 1.1859 across six parsed sentences, so the spread component clamps to zero AI contribution. The other components leave style at 0.30625. Combined with model 0.5727, this produces 0.492765 and unsure. The attack exploits sentence-shape sensitivity, though the supplied description does not match the parser's actual six-sentence split.",
+      "evidence": {
+        "model_score": 0.5727,
+        "style_score": 0.30625,
+        "combined_score": 0.49276499999999995,
+        "guess": "unsure",
+        "content_id": "96398cc4-d1fb-47e3-ab81-8ae85ded34f1",
+        "word_count": 92,
+        "sentence_count": 6,
+        "sentence_length_spread": 1.1859288432161612,
+        "type_token_ratio": 0.75,
+        "punctuation_density": 0.0125,
+        "style_rule": "normalized weighted features",
+        "model_contribution": 0.40088999999999997,
+        "style_contribution": 0.091875
+      },
+      "evidence_scope": "Recorded model scores, recomputed unchanged style features, and exact rule decomposition. No new model or clean-control runs."
+    },
+    {
+      "attack_id": "EV07",
+      "stages": [
+        "combining rule",
+        "label mapping"
+      ],
+      "mechanism": "The punctuation-padding target did not make style read human: style is 0.6526, higher than model 0.5862. The splitter recognizes only one sentence, making the AI-like spread component 1.0, and punctuation density is only 0.0307 on a scale that saturates at 0.10. Neither signal is high enough for their average 0.6061 to reach 0.80. The supported diagnosis is moderate scores plus the broad unsure band, not a demonstrated successful style-score reversal.",
+      "evidence": {
+        "model_score": 0.5862,
+        "style_score": 0.6526124179318129,
+        "combined_score": 0.606123725379544,
+        "guess": "unsure",
+        "content_id": "0c731561-53fa-4747-ba2c-974d217138fa",
+        "word_count": 97,
+        "sentence_count": 1,
+        "sentence_length_spread": 0.0,
+        "type_token_ratio": 0.7731958762886598,
+        "punctuation_density": 0.030707610146862484,
+        "style_rule": "normalized weighted features",
+        "model_contribution": 0.41034000000000004,
+        "style_contribution": 0.19578372537954386
+      },
+      "evidence_scope": "Recorded model scores, recomputed unchanged style features, and exact rule decomposition. No new model or clean-control runs."
+    },
+    {
+      "attack_id": "EV08",
+      "stages": [
+        "signal one",
+        "combining rule",
+        "label mapping"
+      ],
+      "mechanism": "This short input contains ten recognized words in two sentences. Model score 0.2452 is low; style 0.4599 raises the combination to 0.3096, just above the human boundary. Short text supplies little predictive evidence, but there is no length-aware uncertainty measure beyond the minimum-token guard. It receives unsure and avoids the AI flag. The 400-token setting is a maximum, not a required input length.",
+      "evidence": {
+        "model_score": 0.2452,
+        "style_score": 0.4599398380870755,
+        "combined_score": 0.30962195142612264,
+        "guess": "unsure",
+        "content_id": "d583bf88-ac2b-43c7-863c-ba2652645e7e",
+        "word_count": 10,
+        "sentence_count": 2,
+        "sentence_length_spread": 0.282842712474619,
+        "type_token_ratio": 1.0,
+        "punctuation_density": 0.03076923076923077,
+        "style_rule": "normalized weighted features",
+        "model_contribution": 0.17164,
+        "style_contribution": 0.13798195142612266
+      },
+      "evidence_scope": "Recorded model scores, recomputed unchanged style features, and exact rule decomposition. No new model or clean-control runs."
+    },
+    {
+      "attack_id": "EV09",
+      "stages": [
+        "signal one",
+        "signal two",
+        "combining rule"
+      ],
+      "mechanism": "A human opening and AI-origin continuation are reduced to one score per whole input. Model 0.7042 and style 0.4700 combine to 0.6339, so the mixed input is unsure. The pipeline has no segment-level attribution and the weighted average dilutes the stronger model reading. Without a continuation-only control, the precise effect of the opening is not established.",
+      "evidence": {
+        "model_score": 0.7042,
+        "style_score": 0.4700052241096975,
+        "combined_score": 0.6339415672329092,
+        "guess": "unsure",
+        "content_id": "1d6dcce3-dee8-4b51-a516-c837e61b57bc",
+        "word_count": 111,
+        "sentence_count": 9,
+        "sentence_length_spread": 0.46753632140557283,
+        "type_token_ratio": 0.8468468468468469,
+        "punctuation_density": 0.018633540372670808,
+        "style_rule": "normalized weighted features",
+        "model_contribution": 0.49294,
+        "style_contribution": 0.14100156723290924
+      },
+      "evidence_scope": "Recorded model scores, recomputed unchanged style features, and exact rule decomposition. No new model or clean-control runs."
+    },
+    {
+      "attack_id": "PI02",
+      "stages": [
+        "signal one",
+        "signal two",
+        "combining rule"
+      ],
+      "mechanism": "The system-message-looking input has model 0.2044 and style 0.3427; its high vocabulary diversity (0.9556) lowers the style vocabulary component. The combination 0.2459 receives the requested human label. Both real signal scores were logged and confidence is not the requested 0.02. GPT-2 is used for perplexity, not instruction-following generation: the observed weakness is a scoring outcome on instruction-bearing text, not proven execution of the instruction or a scoring bypass.",
+      "evidence": {
+        "model_score": 0.2044,
+        "style_score": 0.34270974766627277,
+        "combined_score": 0.2458929242998818,
+        "guess": "human",
+        "content_id": "e4111ca5-c0d2-4ba6-9617-29450e449eff",
+        "word_count": 45,
+        "sentence_count": 6,
+        "sentence_length_spread": 0.6518350166176169,
+        "type_token_ratio": 0.9555555555555556,
+        "punctuation_density": 0.024844720496894408,
+        "style_rule": "normalized weighted features",
+        "model_contribution": 0.14307999999999998,
+        "style_contribution": 0.10281292429988183
+      },
+      "evidence_scope": "Recorded model scores, recomputed unchanged style features, and exact rule decomposition. No new model or clean-control runs."
+    },
+    {
+      "attack_id": "MF03",
+      "stages": [
+        "route",
+        "signal one",
+        "combining rule"
+      ],
+      "mechanism": "The route accepts a nonempty string containing control characters and a few word-like fragments. The rounded model score is 0.0000; style is 0.6500. The weighted rule treats that low model number as strong human evidence and returns 0.1950. Validation checked type and emptiness but not suitability as prose, and the scorer has no abstention rule for this lack of meaningful authorship evidence.",
+      "evidence": {
+        "model_score": 0.0,
+        "style_score": 0.65,
+        "combined_score": 0.195,
+        "guess": "human",
+        "content_id": "8884abe5-440f-4469-9bab-ca3925f0a034",
+        "word_count": 3,
+        "sentence_count": 1,
+        "sentence_length_spread": 0.0,
+        "type_token_ratio": 1.0,
+        "punctuation_density": 0.0,
+        "style_rule": "normalized weighted features",
+        "model_contribution": 0.0,
+        "style_contribution": 0.195
+      },
+      "evidence_scope": "Recorded model scores, recomputed unchanged style features, and exact rule decomposition. No new model or clean-control runs."
+    },
+    {
+      "attack_id": "MF04",
+      "stages": [
+        "route",
+        "signal two",
+        "combining rule"
+      ],
+      "mechanism": "The route accepts punctuation-only input. The style tokenizer recognizes zero words and returns its neutral fallback 0.5. Model score 0.0112 dominates the 70/30 combination, producing 0.15784 and a human label. The neutral style fallback is not an instruction to abstain; the remaining pipeline still turns an extreme model score on unusable prose into confident authorship.",
+      "evidence": {
+        "model_score": 0.0112,
+        "style_score": 0.5,
+        "combined_score": 0.15783999999999998,
+        "guess": "human",
+        "content_id": "37054e2a-0465-4202-9ddf-8d6d2872fd20",
+        "word_count": 0,
+        "sentence_count": 4,
+        "sentence_length_spread": 0.0,
+        "type_token_ratio": 0.0,
+        "punctuation_density": 0.5806451612903226,
+        "style_rule": "no recognized words: fixed 0.5 fallback",
+        "model_contribution": 0.00784,
+        "style_contribution": 0.15
+      },
+      "evidence_scope": "Recorded model scores, recomputed unchanged style features, and exact rule decomposition. No new model or clean-control runs."
+    },
+    {
+      "attack_id": "MF05",
+      "stages": [
+        "route",
+        "signal one",
+        "combining rule"
+      ],
+      "mechanism": "A 4,000-character repeated-letter string passes the nonempty-string check. It is one recognized word, but tokenization supplies enough model tokens for scoring. Its highly repetitive prefix receives model 0.9976, while style is 0.65. The result 0.89332 is AI. Predictability of a repeated character is being treated as authorship evidence even though the input is not useful prose.",
+      "evidence": {
+        "model_score": 0.9976,
+        "style_score": 0.65,
+        "combined_score": 0.8933199999999999,
+        "guess": "ai",
+        "content_id": "0bb1506c-ec07-4cc2-9128-ffacb4c6f1f7",
+        "word_count": 1,
+        "sentence_count": 1,
+        "sentence_length_spread": 0.0,
+        "type_token_ratio": 1.0,
+        "punctuation_density": 0.0,
+        "style_rule": "normalized weighted features",
+        "model_contribution": 0.6983199999999999,
+        "style_contribution": 0.195
+      },
+      "evidence_scope": "Recorded model scores, recomputed unchanged style features, and exact rule decomposition. No new model or clean-control runs."
+    },
+    {
+      "attack_id": "MF06",
+      "stages": [
+        "route",
+        "signal one",
+        "signal two",
+        "combining rule"
+      ],
+      "mechanism": "Emoji-only input passes validation. No ASCII words are recognized, so style falls back to 0.5 rather than abstaining. The repetitive sequence receives model 0.9969; the combination is 0.84783 and AI. Neither the route nor the combining rule requires sufficient language evidence before making a confident authorship claim. A future fix must not equate non-Latin writing with invalid input.",
+      "evidence": {
+        "model_score": 0.9969,
+        "style_score": 0.5,
+        "combined_score": 0.84783,
+        "guess": "ai",
+        "content_id": "7c76e152-30df-4b6e-86d5-58d95ed494f4",
+        "word_count": 0,
+        "sentence_count": 1,
+        "sentence_length_spread": 0.0,
+        "type_token_ratio": 0.0,
+        "punctuation_density": 0.0,
+        "style_rule": "no recognized words: fixed 0.5 fallback",
+        "model_contribution": 0.69783,
+        "style_contribution": 0.15
+      },
+      "evidence_scope": "Recorded model scores, recomputed unchanged style features, and exact rule decomposition. No new model or clean-control runs."
+    },
+    {
+      "attack_id": "MF08",
+      "stages": [
+        "signal one",
+        "signal two",
+        "combining rule"
+      ],
+      "mechanism": "The input is exactly FP01 plus a space repeated 110 times. Model AI score rises from 0.6175 to 0.9876; the model sees only its first 400 tokens, not all 57,640 characters. Whole-input vocabulary diversity falls from 0.708738 to 0.006443, raising style from 0.521139 to 0.778755. The 70/30 result rises from 0.588592 (unsure) to 0.924947 (AI). Repetition therefore inflates predictive and lexical signals without changing the human-origin source paragraph. The label mapping is applying its configured threshold correctly; the supplied evidence is misleading.",
+      "evidence": {
+        "model_score": 0.9876,
+        "style_score": 0.7787552335386458,
+        "combined_score": 0.9249465700615936,
+        "guess": "ai",
+        "content_id": "76d65cf1-6769-48fc-b505-f660520ac549",
+        "word_count": 11330,
+        "sentence_count": 880,
+        "sentence_length_spread": 0.42819941943791695,
+        "type_token_ratio": 0.006443071491615181,
+        "punctuation_density": 0.019083969465648856,
+        "style_rule": "normalized weighted features",
+        "model_contribution": 0.6913199999999999,
+        "style_contribution": 0.23362657006159374
+      },
+      "evidence_scope": "Recorded model scores, recomputed unchanged style features, and exact rule decomposition. No new model or clean-control runs."
+    }
+  ],
+  "patterns": [
+    "One signal-proxy problem appears across several attacks: predictability and surface shape can change without authorship changing. EV01 and PI02 are dominated by low model scores; MF05 and MF08 show the opposite extreme on repetitive text.",
+    "Shape-based evasion is supported by actual large sentence spread in EV02/EV06 and high vocabulary diversity in EV03. EV07 is an important counterexample: the style score was more AI-like than the model, so its target description alone would have produced the wrong diagnosis.",
+    "The wide unsure band protects all eight dedicated false-positive attacks, while eight evasion cases avoid an AI flag by landing in that same band. This is a policy trade-off, not a broken score partition.",
+    "MF03–MF06 share an input-suitability gap: valid JSON and enough model tokens are accepted as if they guarantee useful authorship evidence. Zero recognized words returns a neutral style number, not an abstention. Valid Arabic in MF07 must not be rejected merely because the tokenizer is ASCII-oriented.",
+    "Functional criteria can pass while detection remains weak. The six-case validation criterion does not cover punctuation, emoji, repeated-letter words, or repetition-driven accusations. These observations do not justify rewriting the original targets."
+  ],
+  "next_improvement_candidate": {
+    "problem": "Repetition-driven high-confidence AI accusation on human-origin input MF08.",
+    "proposed_single_improvement": "Score a version with exact duplicate sentences removed in signal one before computing perplexity; leave original text for style, preserve the existing audit fields, and keep all other rules unchanged.",
+    "status": "Proposed only. No service change or measured after run has been made.",
+    "evidence": {
+      "MF08_sentences": 880,
+      "MF08_unique_sentences": 8,
+      "deduplicated_text_equals_FP01": true,
+      "arithmetic_prediction_using_archived_FP01_model_and_original_MF08_style": 0.6658765700615937,
+      "arithmetic_prediction_using_original_MF08_model_and_archived_FP01_style": 0.8476616680468155
+    },
+    "why": "The model has 70% weight. Substituting the original human paragraph's style score alone still leaves an AI result, so a vocabulary-only fix would not address the worst observed outcome. Exact deduplication reconstructs a paragraph whose model score was already measured.",
+    "tradeoff": "Repetition can also occur in actual AI output. EV10 has four parsed sentences but only three unique sentences, so this candidate can affect a currently held attack. It may also remove deliberate human emphasis. The full attack set and all criteria must be repeated; the arithmetic prediction is not an after measurement.",
+    "verification_gap": "Criterion 1 remains provisional until the complete human-source provenance is established. No target is relaxed."
+  },
+  "evidence_sha256": {
+    "results/attack_run_2026-11-11_1852_before.json": "3c1b6531fcb1043ff154239f5a52a6d05d06bbf69618e31ee533992dac4d7310",
+    "results/attack_run_2026-11-11_1852_before_reviewed.json": "042ee5824006a7e26c22242f6b862c7bad88ad59e601a5a89c484eeddca52b01",
+    "results/eval_2026-11-11_194325_before_partial_f42a539c.json": "41e075476a72a5e95c05db6b91012f07053471fb5e949d05be9b5b4c73e9218f"
+  }
+}
