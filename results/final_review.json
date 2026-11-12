@@ -1,0 +1,161 @@
+{
+  "reviewed_code_commit": "4351879e57ff4692efe21f8a0ce6050ac00bf70c",
+  "repository_url": "https://github.com/cesar17e/ai201-project4-provenance-guard-starter-v2026",
+  "measured_summary": {
+    "held_before": 41,
+    "broke_before": 15,
+    "held_after": 42,
+    "broke_after": 14,
+    "improved_verdicts": [
+      "MF08"
+    ],
+    "regressed_verdicts": [],
+    "changed_model_scores": [
+      "EV02",
+      "EV10",
+      "MF08"
+    ]
+  },
+  "remaining_attacks": [
+    {
+      "attack_id": "EV01",
+      "current_guess": "human",
+      "current_score": 0.2911927797561523,
+      "next_step": "Test matched clean/typo pairs and compare model calibration across verified human and edited-AI prose before considering a model or weight change.",
+      "why_stopped": "This needs a separate controlled model experiment; adding it would mix a second change into the measured deduplication result."
+    },
+    {
+      "attack_id": "EV02",
+      "current_guess": "unsure",
+      "current_score": 0.49605275245597,
+      "next_step": "Evaluate a sample-size-aware sentence-variation measure using matched split/unsplit passages.",
+      "why_stopped": "Changing style normalization would be a second signal change; this unsure result is already recorded as partial evasion."
+    },
+    {
+      "attack_id": "EV03",
+      "current_guess": "unsure",
+      "current_score": 0.6094906132296944,
+      "next_step": "Test quote-aware segmentation so quoted passages and the surrounding prose can be evaluated separately.",
+      "why_stopped": "The saved run has no quote-free matched control, so I cannot claim a quote-removal rule would help without measuring it."
+    },
+    {
+      "attack_id": "EV04",
+      "current_guess": "unsure",
+      "current_score": 0.6018487518725051,
+      "next_step": "Build matched vocabulary-substitution examples across topics and test whether the model reading changes before choosing a calibration adjustment.",
+      "why_stopped": "The attack target alone does not establish the cause of its moderate score; an untested threshold change could accuse more real writers."
+    },
+    {
+      "attack_id": "EV05",
+      "current_guess": "unsure",
+      "current_score": 0.3403117577269487,
+      "next_step": "Keep uncertainty for heavily edited or mixed-origin writing unless additional provenance is available; test such cases under a clearly stated site policy.",
+      "why_stopped": "Current-text patterns cannot recover editing history. Forcing a confident label would hide uncertainty rather than establish authorship."
+    },
+    {
+      "attack_id": "EV06",
+      "current_guess": "unsure",
+      "current_score": 0.49276499999999995,
+      "next_step": "Test whether extreme spread should contribute weaker evidence when based on a small number of sentences.",
+      "why_stopped": "That changes the style rule and needs its own human-writing checks; the single improvement was applied to the model instead."
+    },
+    {
+      "attack_id": "EV07",
+      "current_guess": "unsure",
+      "current_score": 0.606123725379544,
+      "next_step": "Compare the padded text with its unmodified counterpart before adjusting punctuation or label policy.",
+      "why_stopped": "Style was more AI-like than the model in this case. I would not patch the claimed target without a matched comparison."
+    },
+    {
+      "attack_id": "EV08",
+      "current_guess": "unsure",
+      "current_score": 0.30962195142612264,
+      "next_step": "Retain an unsure result or request more context for short passages; evaluate confidence by available context length.",
+      "why_stopped": "There are only ten recognized words. Lowering the AI threshold to catch this sample would risk wrong accusations on short human text."
+    },
+    {
+      "attack_id": "EV09",
+      "current_guess": "unsure",
+      "current_score": 0.6339415672329092,
+      "next_step": "Evaluate paragraph-level agreement on mixed-origin examples and request provenance for claims about the whole work.",
+      "why_stopped": "A whole-text score cannot identify which segment has which origin; segmentation is a separate change with its own error cases."
+    },
+    {
+      "attack_id": "PI02",
+      "current_guess": "human",
+      "current_score": 0.2458929242998818,
+      "next_step": "Test matched inputs with and without the system-looking prefix to isolate how prefix text affects predictability and style.",
+      "why_stopped": "The recorded scores show no scoring bypass or executed instruction. I would investigate the classification effect rather than claim an instruction-execution fix."
+    },
+    {
+      "attack_id": "MF03",
+      "current_guess": "human",
+      "current_score": 0.195,
+      "next_step": "Reject unsupported non-whitespace control characters before inference, while allowing ordinary spaces, tabs, and line breaks.",
+      "why_stopped": "This would add a route-validation change beyond the one model improvement. The current confident human result remains a documented failure."
+    },
+    {
+      "attack_id": "MF04",
+      "current_guess": "human",
+      "current_score": 0.15783999999999998,
+      "next_step": "Abstain or return a clear unsupported-input response when punctuation alone provides no useful authorship evidence; test legitimate stylized writing too.",
+      "why_stopped": "A prose-suitability policy needs separate testing. I did not add a second guard or reinterpret the neutral style fallback."
+    },
+    {
+      "attack_id": "MF05",
+      "current_guess": "ai",
+      "current_score": 0.8933199999999999,
+      "next_step": "Detect extreme repeated-character runs and abstain from authorship analysis, checking effects on legitimate stylized text.",
+      "why_stopped": "The sentence deduplicator intentionally leaves a single repeated-letter word unchanged. Character-level suitability is a different change."
+    },
+    {
+      "attack_id": "MF06",
+      "current_guess": "ai",
+      "current_score": 0.84783,
+      "next_step": "Abstain on emoji-only input, while testing emoji mixed with prose and preserving support for non-Latin writing.",
+      "why_stopped": "A blanket ASCII-word requirement would also mishandle legitimate languages. A separate Unicode-aware input policy is needed."
+    }
+  ],
+  "unresolved_criterion": {
+    "criterion": 1,
+    "status": "PROVISIONAL",
+    "numeric_trials_before": [
+      0,
+      0,
+      0
+    ],
+    "numeric_trials_after": [
+      0,
+      0,
+      0
+    ],
+    "sample_count_per_trial": 20,
+    "required_action": "Trace all 20 passages to individual sources and record independent human-authorship evidence. Two source matches are recorded; 18 remain untraced. Keep the original texts and target. Do not treat the detector output or merely changing metadata flags as verification.",
+    "why_unresolved": "The user reported Reddit discussion boards without individual source links; only two excerpts have been independently located. The measured conditional result is preserved rather than certified."
+  },
+  "other_criteria_status": "Criteria 2–5 MET in every before and after trial; no fully measured criterion remained MISSED.",
+  "stopping_reason": "One model-input improvement was chosen, applied, and measured. Other proposed changes remain untested and were not bundled into the comparison, preserving attribution of the measured result.",
+  "production_trade": [
+    "If this ran on a writing site, I would keep a wide unsure band and send disputed decisions to human review instead of automatically penalizing writers for a detector score.",
+    "That choice lets more AI-assisted writing through and puts more review work on the platform, while reducing the risk that a real writer loses trust or access because of a false accusation."
+  ],
+  "final_checks": {
+    "regression_tests_passed": 18,
+    "environment_checks_passed": 9,
+    "unit8_commits_so_far": 5,
+    "original_criteria_unchanged": true,
+    "complete_attack_runs_each": 56,
+    "real_trials_per_criterion_before_and_after": 3,
+    "original_audit_history_preserved": true
+  },
+  "submission_status": {
+    "functional_evidence_and_writeup_recorded": true,
+    "verified_false_positive_verdict_complete": false,
+    "portal_submission_confirmed": false,
+    "remaining_actions": [
+      "Resolve criterion 1 provenance before claiming its final verdict.",
+      "Include this final documentation in a commit and push.",
+      "Submit the same repository URL through the Course Portal."
+    ]
+  }
+}
