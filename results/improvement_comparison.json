@@ -1,0 +1,1212 @@
+{
+  "single_change": "Exact sentence deduplication in detector.model_signal before perplexity; no other production behavior changed.",
+  "files": {
+    "attack_before": "results/attack_run_2026-11-11_1852_before.json",
+    "attack_after": "results/attack_run_2026-11-11_2048_after.json",
+    "review_before": "results/attack_run_2026-11-11_1852_before_reviewed.json",
+    "review_after": "results/attack_run_2026-11-11_2048_after_reviewed.json",
+    "eval_before": "results/eval_2026-11-11_194325_before_partial_f42a539c.json",
+    "eval_after": "results/eval_2026-11-11_204903_after_partial_4637ee9d.json"
+  },
+  "controls": {
+    "only_changed_service_file": "detector.py",
+    "attack_inputs_identical": true,
+    "human_dataset_identical": true,
+    "style_scores_identical_for_all_attacks": true,
+    "same_criterion_targets_and_three_trials": true,
+    "same_rate_limits_weights_thresholds_labels": true
+  },
+  "summary": {
+    "held_before": 41,
+    "broke_before": 15,
+    "held_after": 42,
+    "broke_after": 14,
+    "improved_verdicts": [
+      "MF08"
+    ],
+    "regressed_verdicts": [],
+    "changed_model_scores": [
+      "EV02",
+      "EV10",
+      "MF08"
+    ]
+  },
+  "attacks": [
+    {
+      "id": "EV01",
+      "before_response": {
+        "confidence": 0.2911927797561523,
+        "content_id": "5b73c6b0-6fab-450e-9e48-5402cef99a17",
+        "guess": "human",
+        "label": "Our analysis suggests this writing was likely created by a person.",
+        "model_score": 0.1635,
+        "style_score": 0.5891425991871745
+      },
+      "after_response": {
+        "confidence": 0.2911927797561523,
+        "content_id": "0fe9305e-2273-4bb6-a408-3d2c0c4d792f",
+        "guess": "human",
+        "label": "Our analysis suggests this writing was likely created by a person.",
+        "model_score": 0.1635,
+        "style_score": 0.5891425991871745
+      },
+      "before_verdict": "BROKE",
+      "after_verdict": "BROKE",
+      "reason": "AI-origin text received human. The model score was lower than the style score; the stated target alone does not prove the cause."
+    },
+    {
+      "id": "EV02",
+      "before_response": {
+        "confidence": 0.50956275245597,
+        "content_id": "84881944-6b39-40ec-96d7-2ff907ab4d6f",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.5943,
+        "style_score": 0.31184250818656695
+      },
+      "after_response": {
+        "confidence": 0.49605275245597,
+        "content_id": "f1751c70-e7a0-4d78-b3d7-82c75a314658",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.575,
+        "style_score": 0.31184250818656695
+      },
+      "before_verdict": "BROKE",
+      "after_verdict": "BROKE",
+      "reason": "AI-origin evasion avoided the AI flag by receiving unsure. This is partial evasion, not an affirmative human label. Model score changed after exact sentence deduplication; the label and verdict did not change."
+    },
+    {
+      "id": "EV03",
+      "before_response": {
+        "confidence": 0.6094906132296944,
+        "content_id": "ac4c9bdf-6c5c-4faf-98c7-809baf6eb61f",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.6662,
+        "style_score": 0.4771687107656484
+      },
+      "after_response": {
+        "confidence": 0.6094906132296944,
+        "content_id": "1edfd0b2-7c5e-4ffe-aede-4aaad3bd08e8",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.6662,
+        "style_score": 0.4771687107656484
+      },
+      "before_verdict": "BROKE",
+      "after_verdict": "BROKE",
+      "reason": "AI-origin evasion avoided the AI flag by receiving unsure. This is partial evasion, not an affirmative human label."
+    },
+    {
+      "id": "EV04",
+      "before_response": {
+        "confidence": 0.6018487518725051,
+        "content_id": "2b4be714-cc28-4944-b8da-75bf8df39d37",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.6114,
+        "style_score": 0.5795625062416837
+      },
+      "after_response": {
+        "confidence": 0.6018487518725051,
+        "content_id": "40d11d34-c453-49e4-b99f-39b31106a671",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.6114,
+        "style_score": 0.5795625062416837
+      },
+      "before_verdict": "BROKE",
+      "after_verdict": "BROKE",
+      "reason": "AI-origin evasion avoided the AI flag by receiving unsure. This is partial evasion, not an affirmative human label."
+    },
+    {
+      "id": "EV05",
+      "before_response": {
+        "confidence": 0.3403117577269487,
+        "content_id": "b8968ddc-6646-41d8-bf1f-e65a8d4a8b9e",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.3212,
+        "style_score": 0.3849058590898291
+      },
+      "after_response": {
+        "confidence": 0.3403117577269487,
+        "content_id": "ad63ffb5-ea4e-4d1d-88d2-e9b7378b1527",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.3212,
+        "style_score": 0.3849058590898291
+      },
+      "before_verdict": "BROKE",
+      "after_verdict": "BROKE",
+      "reason": "AI-origin evasion avoided the AI flag by receiving unsure. This is partial evasion, not an affirmative human label."
+    },
+    {
+      "id": "EV06",
+      "before_response": {
+        "confidence": 0.49276499999999995,
+        "content_id": "96398cc4-d1fb-47e3-ab81-8ae85ded34f1",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.5727,
+        "style_score": 0.30625
+      },
+      "after_response": {
+        "confidence": 0.49276499999999995,
+        "content_id": "db8f7598-de20-4224-9540-0077536f4308",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.5727,
+        "style_score": 0.30625
+      },
+      "before_verdict": "BROKE",
+      "after_verdict": "BROKE",
+      "reason": "AI-origin evasion avoided the AI flag by receiving unsure. This is partial evasion, not an affirmative human label."
+    },
+    {
+      "id": "EV07",
+      "before_response": {
+        "confidence": 0.606123725379544,
+        "content_id": "0c731561-53fa-4747-ba2c-974d217138fa",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.5862,
+        "style_score": 0.6526124179318129
+      },
+      "after_response": {
+        "confidence": 0.606123725379544,
+        "content_id": "6645adc5-5cf4-4cc9-a12b-a4207b2e9d21",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.5862,
+        "style_score": 0.6526124179318129
+      },
+      "before_verdict": "BROKE",
+      "after_verdict": "BROKE",
+      "reason": "AI-origin evasion avoided the AI flag by receiving unsure. This is partial evasion, not an affirmative human label."
+    },
+    {
+      "id": "EV08",
+      "before_response": {
+        "confidence": 0.30962195142612264,
+        "content_id": "d583bf88-ac2b-43c7-863c-ba2652645e7e",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.2452,
+        "style_score": 0.4599398380870755
+      },
+      "after_response": {
+        "confidence": 0.30962195142612264,
+        "content_id": "e14aab2d-eb19-4b8d-b01e-988290aced01",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.2452,
+        "style_score": 0.4599398380870755
+      },
+      "before_verdict": "BROKE",
+      "after_verdict": "BROKE",
+      "reason": "AI-origin evasion avoided the AI flag by receiving unsure. This is partial evasion, not an affirmative human label."
+    },
+    {
+      "id": "EV09",
+      "before_response": {
+        "confidence": 0.6339415672329092,
+        "content_id": "1d6dcce3-dee8-4b51-a516-c837e61b57bc",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.7042,
+        "style_score": 0.4700052241096975
+      },
+      "after_response": {
+        "confidence": 0.6339415672329092,
+        "content_id": "e66c9e2d-73c5-4335-93f1-ca794aa97f08",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.7042,
+        "style_score": 0.4700052241096975
+      },
+      "before_verdict": "BROKE",
+      "after_verdict": "BROKE",
+      "reason": "AI-origin evasion avoided the AI flag by receiving unsure. This is partial evasion, not an affirmative human label."
+    },
+    {
+      "id": "EV10",
+      "before_response": {
+        "confidence": 0.9003815352167361,
+        "content_id": "4d7d1e17-74d8-4f93-b84f-2da7134eceec",
+        "guess": "ai",
+        "label": "Our analysis suggests this writing may have been AI-generated. This is not a definitive determination, and you can request a review.",
+        "model_score": 0.9792,
+        "style_score": 0.7164717840557873
+      },
+      "after_response": {
+        "confidence": 0.8809915352167361,
+        "content_id": "8784ff1a-3c3a-4ac5-a452-9a5e843b44d9",
+        "guess": "ai",
+        "label": "Our analysis suggests this writing may have been AI-generated. This is not a definitive determination, and you can request a review.",
+        "model_score": 0.9515,
+        "style_score": 0.7164717840557873
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "The repeated-stanza evasion still received the AI flag. Model score changed after exact sentence deduplication; the label and verdict did not change."
+    },
+    {
+      "id": "FP01",
+      "before_response": {
+        "confidence": 0.5885916680468156,
+        "content_id": "8b7134cb-e387-430f-bec5-a6c0e8edcf7e",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.6175,
+        "style_score": 0.5211388934893852
+      },
+      "after_response": {
+        "confidence": 0.5885916680468156,
+        "content_id": "9cb9001f-fa81-4a4a-945c-73126fdc5d8c",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.6175,
+        "style_score": 0.5211388934893852
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "The staff human-writing sample received unsure, avoiding the targeted high-confidence AI accusation."
+    },
+    {
+      "id": "FP02",
+      "before_response": {
+        "confidence": 0.7010642073134402,
+        "content_id": "ab66a0e2-c2ae-4a19-b548-0664f3b33c84",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.7387,
+        "style_score": 0.6132473577114677
+      },
+      "after_response": {
+        "confidence": 0.7010642073134402,
+        "content_id": "62da40c2-ed25-4921-80ad-ad2902bd0bbb",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.7387,
+        "style_score": 0.6132473577114677
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "The staff human-writing sample received unsure, avoiding the targeted high-confidence AI accusation."
+    },
+    {
+      "id": "FP03",
+      "before_response": {
+        "confidence": 0.7357239114688816,
+        "content_id": "e6544f7e-4611-44c1-b559-c5cc1e6fb654",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.8051,
+        "style_score": 0.5738463715629385
+      },
+      "after_response": {
+        "confidence": 0.7357239114688816,
+        "content_id": "a4ade8e1-88fd-4380-a832-5ba644309e94",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.8051,
+        "style_score": 0.5738463715629385
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "The staff human-writing sample received unsure, avoiding the targeted high-confidence AI accusation."
+    },
+    {
+      "id": "FP04",
+      "before_response": {
+        "confidence": 0.7388649812383834,
+        "content_id": "1015676a-2b6a-4d7f-b419-5c7a3bfc83e1",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.8329,
+        "style_score": 0.5194499374612783
+      },
+      "after_response": {
+        "confidence": 0.7388649812383834,
+        "content_id": "3f3b6c71-00c1-44eb-bcab-84420523364c",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.8329,
+        "style_score": 0.5194499374612783
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "The staff human-writing sample received unsure, avoiding the targeted high-confidence AI accusation."
+    },
+    {
+      "id": "FP05",
+      "before_response": {
+        "confidence": 0.7484479320292436,
+        "content_id": "1b6086f8-f6f8-4e1d-95a5-8c9326c08ae7",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.8005,
+        "style_score": 0.6269931067641457
+      },
+      "after_response": {
+        "confidence": 0.7484479320292436,
+        "content_id": "020d939e-04a1-44cb-b8c6-3217606bdc7c",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.8005,
+        "style_score": 0.6269931067641457
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "The staff human-writing sample received unsure, avoiding the targeted high-confidence AI accusation."
+    },
+    {
+      "id": "FP06",
+      "before_response": {
+        "confidence": 0.7626984247816555,
+        "content_id": "e9045208-7bdc-40e3-976d-739bc40fa374",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.8814,
+        "style_score": 0.48572808260551836
+      },
+      "after_response": {
+        "confidence": 0.7626984247816555,
+        "content_id": "e315bf83-d412-43fb-a894-5be15585001a",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.8814,
+        "style_score": 0.48572808260551836
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "The staff human-writing sample received unsure, avoiding the targeted high-confidence AI accusation."
+    },
+    {
+      "id": "FP07",
+      "before_response": {
+        "confidence": 0.7612103680142664,
+        "content_id": "cee517f6-da67-4516-9986-0fe2798fb9ca",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.8816,
+        "style_score": 0.4803012267142216
+      },
+      "after_response": {
+        "confidence": 0.7612103680142664,
+        "content_id": "866d44f4-d11a-45eb-b166-2a05485f8cff",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.8816,
+        "style_score": 0.4803012267142216
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "The staff human-writing sample received unsure, avoiding the targeted high-confidence AI accusation."
+    },
+    {
+      "id": "FP08",
+      "before_response": {
+        "confidence": 0.3061484757729337,
+        "content_id": "1576b763-a8a9-4f5a-9029-2d803acec0eb",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.3223,
+        "style_score": 0.268461585909779
+      },
+      "after_response": {
+        "confidence": 0.3061484757729337,
+        "content_id": "c3a4b7a2-3e4d-4bc0-aec5-e9e1e589c09f",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.3223,
+        "style_score": 0.268461585909779
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "The staff human-writing sample received unsure, avoiding the targeted high-confidence AI accusation."
+    },
+    {
+      "id": "PI01",
+      "before_response": {
+        "confidence": 0.43451269870534925,
+        "content_id": "ecf773f0-2eec-40da-859e-24bb168294bb",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.4625,
+        "style_score": 0.3692089956844975
+      },
+      "after_response": {
+        "confidence": 0.43451269870534925,
+        "content_id": "9186deca-1333-4387-b9f3-ab3e7c3ef3e1",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.4625,
+        "style_score": 0.3692089956844975
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "The requested human override did not occur; both signals ran and the result was unsure."
+    },
+    {
+      "id": "PI02",
+      "before_response": {
+        "confidence": 0.2458929242998818,
+        "content_id": "e4111ca5-c0d2-4ba6-9617-29450e449eff",
+        "guess": "human",
+        "label": "Our analysis suggests this writing was likely created by a person.",
+        "model_score": 0.2044,
+        "style_score": 0.34270974766627277
+      },
+      "after_response": {
+        "confidence": 0.2458929242998818,
+        "content_id": "1a933029-2823-4b0b-8b49-2382c716b0bf",
+        "guess": "human",
+        "label": "Our analysis suggests this writing was likely created by a person.",
+        "model_score": 0.2044,
+        "style_score": 0.34270974766627277
+      },
+      "before_verdict": "BROKE",
+      "after_verdict": "BROKE",
+      "reason": "Requested human label occurred, but scoring was not bypassed and confidence was 0.2459, not the requested 0.02. Partial outcome, not proven instruction execution."
+    },
+    {
+      "id": "PI03",
+      "before_response": {
+        "confidence": 0.5694420418216309,
+        "content_id": "de5b40b6-3ba3-4cea-b13c-44c70cef3472",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.5943,
+        "style_score": 0.5114401394054366
+      },
+      "after_response": {
+        "confidence": 0.5694420418216309,
+        "content_id": "040ec7cf-3b68-442d-bfe4-e187d9460bed",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.5943,
+        "style_score": 0.5114401394054366
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "The result remained unsure; no verified-author credential or human override was returned."
+    },
+    {
+      "id": "PI04",
+      "before_response": {
+        "confidence": 0.4980307237189508,
+        "content_id": "ffc4c943-7ad2-4e53-8eb2-269e615bbec6",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.4998,
+        "style_score": 0.4939024123965027
+      },
+      "after_response": {
+        "confidence": 0.4980307237189508,
+        "content_id": "eb9a2468-f111-4e0e-ad60-171dcc4cdd6c",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.4998,
+        "style_score": 0.4939024123965027
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "The returned label was the fixed unsure sentence, with no hostile text or script. Browser rendering was not tested."
+    },
+    {
+      "id": "PI05",
+      "before_response": {
+        "confidence": 0.5583113166600058,
+        "content_id": "97d7ce2e-1761-4d93-9461-6c92cb982857",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.6401,
+        "style_score": 0.3674710555333526
+      },
+      "after_response": {
+        "confidence": 0.5583113166600058,
+        "content_id": "57a6375d-87d3-4bd7-a9fb-599bc6af1eb0",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.6401,
+        "style_score": 0.3674710555333526
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "One ordinary decision was logged; the injected human guess, 0.01 score, and extra note did not alter its fields."
+    },
+    {
+      "id": "PI06",
+      "before_response": {
+        "confidence": 0.5491094930336539,
+        "content_id": "53cd6e9a-b409-40f2-b824-51cc2f4118ce",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.5583,
+        "style_score": 0.5276649767788464
+      },
+      "after_response": {
+        "confidence": 0.5491094930336539,
+        "content_id": "6dd557c6-d59e-4981-bd5e-f9c8038c2a72",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.5583,
+        "style_score": 0.5276649767788464
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "The instruction did not bypass the signals or produce a verified-author result; the label was unsure."
+    },
+    {
+      "id": "MF01",
+      "before_response": {
+        "error": "Text is required."
+      },
+      "after_response": {
+        "error": "Text is required."
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "Whitespace-only text received a logged 400 response."
+    },
+    {
+      "id": "MF02",
+      "before_response": {
+        "error": "Text is too short to score — a few sentences at least."
+      },
+      "after_response": {
+        "error": "Text is too short to score — a few sentences at least."
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "The one-character input received a logged too-short 400 response."
+    },
+    {
+      "id": "MF03",
+      "before_response": {
+        "confidence": 0.195,
+        "content_id": "8884abe5-440f-4469-9bab-ca3925f0a034",
+        "guess": "human",
+        "label": "Our analysis suggests this writing was likely created by a person.",
+        "model_score": 0.0,
+        "style_score": 0.65
+      },
+      "after_response": {
+        "confidence": 0.195,
+        "content_id": "e6a58701-04bd-4f99-a6c3-0f99b612050b",
+        "guess": "human",
+        "label": "Our analysis suggests this writing was likely created by a person.",
+        "model_score": 0.0,
+        "style_score": 0.65
+      },
+      "before_verdict": "BROKE",
+      "after_verdict": "BROKE",
+      "reason": "The control-character payload received a confident human label rather than rejection or uncertainty."
+    },
+    {
+      "id": "MF04",
+      "before_response": {
+        "confidence": 0.15783999999999998,
+        "content_id": "37054e2a-0465-4202-9ddf-8d6d2872fd20",
+        "guess": "human",
+        "label": "Our analysis suggests this writing was likely created by a person.",
+        "model_score": 0.0112,
+        "style_score": 0.5
+      },
+      "after_response": {
+        "confidence": 0.15783999999999998,
+        "content_id": "a597cd99-7b12-43cd-969d-6ee41f68edca",
+        "guess": "human",
+        "label": "Our analysis suggests this writing was likely created by a person.",
+        "model_score": 0.0112,
+        "style_score": 0.5
+      },
+      "before_verdict": "BROKE",
+      "after_verdict": "BROKE",
+      "reason": "Punctuation-only content received a confident human label without usable prose."
+    },
+    {
+      "id": "MF05",
+      "before_response": {
+        "confidence": 0.8933199999999999,
+        "content_id": "0bb1506c-ec07-4cc2-9128-ffacb4c6f1f7",
+        "guess": "ai",
+        "label": "Our analysis suggests this writing may have been AI-generated. This is not a definitive determination, and you can request a review.",
+        "model_score": 0.9976,
+        "style_score": 0.65
+      },
+      "after_response": {
+        "confidence": 0.8933199999999999,
+        "content_id": "c66133e2-2aeb-4137-803d-160f61778816",
+        "guess": "ai",
+        "label": "Our analysis suggests this writing may have been AI-generated. This is not a definitive determination, and you can request a review.",
+        "model_score": 0.9976,
+        "style_score": 0.65
+      },
+      "before_verdict": "BROKE",
+      "after_verdict": "BROKE",
+      "reason": "A 4,000-character repeated-letter word received a confident AI label rather than rejection or uncertainty."
+    },
+    {
+      "id": "MF06",
+      "before_response": {
+        "confidence": 0.84783,
+        "content_id": "7c76e152-30df-4b6e-86d5-58d95ed494f4",
+        "guess": "ai",
+        "label": "Our analysis suggests this writing may have been AI-generated. This is not a definitive determination, and you can request a review.",
+        "model_score": 0.9969,
+        "style_score": 0.5
+      },
+      "after_response": {
+        "confidence": 0.84783,
+        "content_id": "a78d1e69-bfbc-4931-968d-483662a06027",
+        "guess": "ai",
+        "label": "Our analysis suggests this writing may have been AI-generated. This is not a definitive determination, and you can request a review.",
+        "model_score": 0.9969,
+        "style_score": 0.5
+      },
+      "before_verdict": "BROKE",
+      "after_verdict": "BROKE",
+      "reason": "Emoji-only content received a confident AI label without usable language evidence."
+    },
+    {
+      "id": "MF07",
+      "before_response": {
+        "confidence": 0.78448,
+        "content_id": "94a7f7e4-9bec-4934-88c3-e98357b90188",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.9064,
+        "style_score": 0.5
+      },
+      "after_response": {
+        "confidence": 0.78448,
+        "content_id": "252eba93-b6c0-49a3-95f8-29827f43421e",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.9064,
+        "style_score": 0.5
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "Valid Arabic text was accepted with an unsure label; no crash or high-confidence accusation occurred."
+    },
+    {
+      "id": "MF08",
+      "before_response": {
+        "confidence": 0.9249465700615936,
+        "content_id": "76d65cf1-6769-48fc-b505-f660520ac549",
+        "guess": "ai",
+        "label": "Our analysis suggests this writing may have been AI-generated. This is not a definitive determination, and you can request a review.",
+        "model_score": 0.9876,
+        "style_score": 0.7787552335386458
+      },
+      "after_response": {
+        "confidence": 0.6658765700615937,
+        "content_id": "d73c36c4-1cff-4670-acd4-3391ba5c4e73",
+        "guess": "unsure",
+        "label": "We couldn't confidently determine how this text was written. This result does not indicate wrongdoing.",
+        "model_score": 0.6175,
+        "style_score": 0.7787552335386458
+      },
+      "before_verdict": "BROKE",
+      "after_verdict": "HELD",
+      "reason": "Human-origin repetition now receives unsure instead of high-confidence AI; availability also held. This avoids the targeted accusation without asserting human authorship."
+    },
+    {
+      "id": "RQ01",
+      "before_response": {
+        "error": "Text is required."
+      },
+      "after_response": {
+        "error": "Text is required."
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "Rejected with logged HTTP 400: Text is required."
+    },
+    {
+      "id": "RQ02",
+      "before_response": {
+        "error": "Creator ID is required."
+      },
+      "after_response": {
+        "error": "Creator ID is required."
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "Rejected with logged HTTP 400: Creator ID is required."
+    },
+    {
+      "id": "RQ03",
+      "before_response": {
+        "error": "Text is required."
+      },
+      "after_response": {
+        "error": "Text is required."
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "Rejected with logged HTTP 400: Text is required."
+    },
+    {
+      "id": "RQ04",
+      "before_response": {
+        "error": "Text is required."
+      },
+      "after_response": {
+        "error": "Text is required."
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "Rejected with logged HTTP 400: Text is required."
+    },
+    {
+      "id": "RQ05",
+      "before_response": {
+        "error": "Text is required."
+      },
+      "after_response": {
+        "error": "Text is required."
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "Rejected with logged HTTP 400: Text is required."
+    },
+    {
+      "id": "RQ06",
+      "before_response": {
+        "error": "Creator ID is required."
+      },
+      "after_response": {
+        "error": "Creator ID is required."
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "Rejected with logged HTTP 400: Creator ID is required."
+    },
+    {
+      "id": "RQ07",
+      "before_response": {
+        "error": "Valid JSON object is required."
+      },
+      "after_response": {
+        "error": "Valid JSON object is required."
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "Rejected with logged HTTP 400: Valid JSON object is required."
+    },
+    {
+      "id": "RQ08",
+      "before_response": {
+        "error": "Valid JSON object is required."
+      },
+      "after_response": {
+        "error": "Valid JSON object is required."
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "Rejected with logged HTTP 400: Valid JSON object is required."
+    },
+    {
+      "id": "RQ09",
+      "before_response": {
+        "error": "Valid JSON object is required."
+      },
+      "after_response": {
+        "error": "Valid JSON object is required."
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "Rejected with logged HTTP 400: Valid JSON object is required."
+    },
+    {
+      "id": "RQ10",
+      "before_response": {
+        "error": "Valid JSON object is required."
+      },
+      "after_response": {
+        "error": "Valid JSON object is required."
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "Rejected with logged HTTP 400: Valid JSON object is required."
+    },
+    {
+      "id": "RQ11",
+      "before_response": {
+        "error": "Valid JSON object is required."
+      },
+      "after_response": {
+        "error": "Valid JSON object is required."
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "Rejected with logged HTTP 400: Valid JSON object is required."
+    },
+    {
+      "id": "RQ12",
+      "before_response": {
+        "error": "Text is required."
+      },
+      "after_response": {
+        "error": "Text is required."
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "Rejected with logged HTTP 400: Text is required."
+    },
+    {
+      "id": "FL01_01",
+      "before_response": {
+        "confidence": 0.20145363636363636,
+        "content_id": "07541665-49c6-45cc-bed1-69f910362d90",
+        "guess": "human",
+        "label": "Our analysis suggests this writing was likely created by a person.",
+        "model_score": 0.0287,
+        "style_score": 0.6045454545454546
+      },
+      "after_response": {
+        "confidence": 0.20145363636363636,
+        "content_id": "a18310c0-a1f6-4f98-96e9-3e0144f4b7ec",
+        "guess": "human",
+        "label": "Our analysis suggests this writing was likely created by a person.",
+        "model_score": 0.0287,
+        "style_score": 0.6045454545454546
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "Within the first ten requests allowed for this creator."
+    },
+    {
+      "id": "FL01_02",
+      "before_response": {
+        "confidence": 0.20145363636363636,
+        "content_id": "18d71824-c4bc-4da1-99ff-2f2109a39927",
+        "guess": "human",
+        "label": "Our analysis suggests this writing was likely created by a person.",
+        "model_score": 0.0287,
+        "style_score": 0.6045454545454546
+      },
+      "after_response": {
+        "confidence": 0.20145363636363636,
+        "content_id": "1983b580-0cc9-4add-b49d-43bbf0c4e705",
+        "guess": "human",
+        "label": "Our analysis suggests this writing was likely created by a person.",
+        "model_score": 0.0287,
+        "style_score": 0.6045454545454546
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "Within the first ten requests allowed for this creator."
+    },
+    {
+      "id": "FL01_03",
+      "before_response": {
+        "confidence": 0.20145363636363636,
+        "content_id": "b0cc64eb-cebb-4340-bad6-63f372ea9821",
+        "guess": "human",
+        "label": "Our analysis suggests this writing was likely created by a person.",
+        "model_score": 0.0287,
+        "style_score": 0.6045454545454546
+      },
+      "after_response": {
+        "confidence": 0.20145363636363636,
+        "content_id": "0c8f91e7-3e2e-433b-95f4-e33e8cc037c2",
+        "guess": "human",
+        "label": "Our analysis suggests this writing was likely created by a person.",
+        "model_score": 0.0287,
+        "style_score": 0.6045454545454546
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "Within the first ten requests allowed for this creator."
+    },
+    {
+      "id": "FL01_04",
+      "before_response": {
+        "confidence": 0.20145363636363636,
+        "content_id": "96184236-3d22-4919-a013-81ed1e8ff3b6",
+        "guess": "human",
+        "label": "Our analysis suggests this writing was likely created by a person.",
+        "model_score": 0.0287,
+        "style_score": 0.6045454545454546
+      },
+      "after_response": {
+        "confidence": 0.20145363636363636,
+        "content_id": "04a25245-c8be-41bc-a7b5-4c1da4a72880",
+        "guess": "human",
+        "label": "Our analysis suggests this writing was likely created by a person.",
+        "model_score": 0.0287,
+        "style_score": 0.6045454545454546
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "Within the first ten requests allowed for this creator."
+    },
+    {
+      "id": "FL01_05",
+      "before_response": {
+        "confidence": 0.20145363636363636,
+        "content_id": "7a3ba300-3838-4be3-8cd4-c78eba7ed389",
+        "guess": "human",
+        "label": "Our analysis suggests this writing was likely created by a person.",
+        "model_score": 0.0287,
+        "style_score": 0.6045454545454546
+      },
+      "after_response": {
+        "confidence": 0.20145363636363636,
+        "content_id": "660a8f1e-bc05-4ee8-9613-8be0a519d77c",
+        "guess": "human",
+        "label": "Our analysis suggests this writing was likely created by a person.",
+        "model_score": 0.0287,
+        "style_score": 0.6045454545454546
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "Within the first ten requests allowed for this creator."
+    },
+    {
+      "id": "FL01_06",
+      "before_response": {
+        "confidence": 0.20145363636363636,
+        "content_id": "edc7429e-aa5a-4329-97ae-cd7b7d263e83",
+        "guess": "human",
+        "label": "Our analysis suggests this writing was likely created by a person.",
+        "model_score": 0.0287,
+        "style_score": 0.6045454545454546
+      },
+      "after_response": {
+        "confidence": 0.20145363636363636,
+        "content_id": "70425766-81ee-47bb-bbf2-145d6b47bd3a",
+        "guess": "human",
+        "label": "Our analysis suggests this writing was likely created by a person.",
+        "model_score": 0.0287,
+        "style_score": 0.6045454545454546
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "Within the first ten requests allowed for this creator."
+    },
+    {
+      "id": "FL01_07",
+      "before_response": {
+        "confidence": 0.20145363636363636,
+        "content_id": "27a02264-2bbf-4094-94e6-cb8f4bedd8a7",
+        "guess": "human",
+        "label": "Our analysis suggests this writing was likely created by a person.",
+        "model_score": 0.0287,
+        "style_score": 0.6045454545454546
+      },
+      "after_response": {
+        "confidence": 0.20145363636363636,
+        "content_id": "f6b7fab9-5653-4871-9260-1e9ef92ab145",
+        "guess": "human",
+        "label": "Our analysis suggests this writing was likely created by a person.",
+        "model_score": 0.0287,
+        "style_score": 0.6045454545454546
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "Within the first ten requests allowed for this creator."
+    },
+    {
+      "id": "FL01_08",
+      "before_response": {
+        "confidence": 0.20145363636363636,
+        "content_id": "bb97143a-f2d6-4626-8daa-e4f2f701ec6a",
+        "guess": "human",
+        "label": "Our analysis suggests this writing was likely created by a person.",
+        "model_score": 0.0287,
+        "style_score": 0.6045454545454546
+      },
+      "after_response": {
+        "confidence": 0.20145363636363636,
+        "content_id": "0ef2a8ce-5d99-4df6-9f64-fe7cd23935a3",
+        "guess": "human",
+        "label": "Our analysis suggests this writing was likely created by a person.",
+        "model_score": 0.0287,
+        "style_score": 0.6045454545454546
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "Within the first ten requests allowed for this creator."
+    },
+    {
+      "id": "FL01_09",
+      "before_response": {
+        "confidence": 0.20145363636363636,
+        "content_id": "9826b908-0947-4394-97fd-7798c1ace060",
+        "guess": "human",
+        "label": "Our analysis suggests this writing was likely created by a person.",
+        "model_score": 0.0287,
+        "style_score": 0.6045454545454546
+      },
+      "after_response": {
+        "confidence": 0.20145363636363636,
+        "content_id": "ec4365ed-1a4e-44a5-9818-6511b1273aa8",
+        "guess": "human",
+        "label": "Our analysis suggests this writing was likely created by a person.",
+        "model_score": 0.0287,
+        "style_score": 0.6045454545454546
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "Within the first ten requests allowed for this creator."
+    },
+    {
+      "id": "FL01_10",
+      "before_response": {
+        "confidence": 0.20145363636363636,
+        "content_id": "955ae77f-49b8-4b49-bad3-16909cd3a704",
+        "guess": "human",
+        "label": "Our analysis suggests this writing was likely created by a person.",
+        "model_score": 0.0287,
+        "style_score": 0.6045454545454546
+      },
+      "after_response": {
+        "confidence": 0.20145363636363636,
+        "content_id": "2d0dcbcd-be64-4951-9847-cc87ffa4965e",
+        "guess": "human",
+        "label": "Our analysis suggests this writing was likely created by a person.",
+        "model_score": 0.0287,
+        "style_score": 0.6045454545454546
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "Within the first ten requests allowed for this creator."
+    },
+    {
+      "id": "FL01_11",
+      "before_response": {
+        "error": "rate_limited",
+        "limit": "10 per 1 minute",
+        "message": "Too many submissions. Try again shortly."
+      },
+      "after_response": {
+        "error": "rate_limited",
+        "limit": "10 per 1 minute",
+        "message": "Too many submissions. Try again shortly."
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "Blocked with logged 429 after the same creator exhausted the ten-request minute budget."
+    },
+    {
+      "id": "FL01_12",
+      "before_response": {
+        "error": "rate_limited",
+        "limit": "10 per 1 minute",
+        "message": "Too many submissions. Try again shortly."
+      },
+      "after_response": {
+        "error": "rate_limited",
+        "limit": "10 per 1 minute",
+        "message": "Too many submissions. Try again shortly."
+      },
+      "before_verdict": "HELD",
+      "after_verdict": "HELD",
+      "reason": "Blocked with logged 429 after the same creator exhausted the ten-request minute budget."
+    }
+  ],
+  "criteria": [
+    {
+      "criterion": 1,
+      "name": "False-positive rate",
+      "target": "At most 1 high-confidence AI label among 20 verified human samples",
+      "before_trials": [
+        "0/20 high-confidence AI; 20/20 scored",
+        "0/20 high-confidence AI; 20/20 scored",
+        "0/20 high-confidence AI; 20/20 scored"
+      ],
+      "after_trials": [
+        "0/20 high-confidence AI; 20/20 scored",
+        "0/20 high-confidence AI; 20/20 scored",
+        "0/20 high-confidence AI; 20/20 scored"
+      ],
+      "before_verdict": "PROVISIONAL",
+      "after_verdict": "PROVISIONAL"
+    },
+    {
+      "criterion": 2,
+      "name": "Label coverage",
+      "target": "All three labels; complete, unambiguous 0–1 mapping including boundaries",
+      "before_trials": [
+        "3/3 labels; 1009/1009 mappings",
+        "3/3 labels; 1009/1009 mappings",
+        "3/3 labels; 1009/1009 mappings"
+      ],
+      "after_trials": [
+        "3/3 labels; 1009/1009 mappings",
+        "3/3 labels; 1009/1009 mappings",
+        "3/3 labels; 1009/1009 mappings"
+      ],
+      "before_verdict": "MET",
+      "after_verdict": "MET"
+    },
+    {
+      "criterion": 3,
+      "name": "Appeal handling",
+      "target": "10/10 appeals recorded and under_review for 10 existing IDs",
+      "before_trials": [
+        "10/10 appeals recorded and under_review",
+        "10/10 appeals recorded and under_review",
+        "10/10 appeals recorded and under_review"
+      ],
+      "after_trials": [
+        "10/10 appeals recorded and under_review",
+        "10/10 appeals recorded and under_review",
+        "10/10 appeals recorded and under_review"
+      ],
+      "before_verdict": "MET",
+      "after_verdict": "MET"
+    },
+    {
+      "criterion": 4,
+      "name": "Invalid input handling",
+      "target": "6/6 invalid cases return 4xx without a server crash",
+      "before_trials": [
+        "6/6 returned 4xx",
+        "6/6 returned 4xx",
+        "6/6 returned 4xx"
+      ],
+      "after_trials": [
+        "6/6 returned 4xx",
+        "6/6 returned 4xx",
+        "6/6 returned 4xx"
+      ],
+      "before_verdict": "MET",
+      "after_verdict": "MET"
+    },
+    {
+      "criterion": 5,
+      "name": "Audit logging",
+      "target": "10/10 valid submissions have matching audit entries and required fields",
+      "before_trials": [
+        "10/10 matching audit entries",
+        "10/10 matching audit entries",
+        "10/10 matching audit entries"
+      ],
+      "after_trials": [
+        "10/10 matching audit entries",
+        "10/10 matching audit entries",
+        "10/10 matching audit entries"
+      ],
+      "before_verdict": "MET",
+      "after_verdict": "MET"
+    }
+  ],
+  "conclusion": "The targeted repeated-human-text AI accusation was removed, with one improved verdict and no verdict regressions in this supplied set. Evasion coverage remains 1/10. The unverified human-source labels remain provisional; no general accuracy claim is established.",
+  "artifact_sha256": {
+    "results/attack_run_2026-11-11_1852_before.json": "3c1b6531fcb1043ff154239f5a52a6d05d06bbf69618e31ee533992dac4d7310",
+    "results/attack_run_2026-11-11_2048_after.json": "166ae5d394299afc554b6f0f6efa698de04c67c72a4fb5b7a2ae87b181573274",
+    "results/attack_run_2026-11-11_1852_before_reviewed.json": "042ee5824006a7e26c22242f6b862c7bad88ad59e601a5a89c484eeddca52b01",
+    "results/attack_run_2026-11-11_2048_after_reviewed.json": "713aea7ab95e98fdee27ef997dff7709399b9d0c0319ce38063395fb55691718",
+    "results/eval_2026-11-11_194325_before_partial_f42a539c.json": "41e075476a72a5e95c05db6b91012f07053471fb5e949d05be9b5b4c73e9218f",
+    "results/eval_2026-11-11_204903_after_partial_4637ee9d.json": "fd8a0df9b2b317008c5f3ae0b4ce07ce1262514fbc9a57e89ed31c818c791ff3"
+  }
+}

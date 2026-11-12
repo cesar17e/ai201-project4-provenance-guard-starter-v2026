@@ -42,6 +42,7 @@ for yourself where it lands.
 """
 
 import math
+import re
 
 import config
 
@@ -113,6 +114,18 @@ def perplexity(text: str) -> float:
     return float(math.exp(output.loss.item()))
 
 
+def _deduplicate_sentences(text: str) -> str:
+    """Keep the first copy of each exact sentence for the model signal only.
+
+    Match the existing sentence-boundary convention. Preserve the input byte
+    for byte when there are no duplicates; case and punctuation are significant.
+    This limits repeated-text predictability without changing the style input.
+    """
+    parts = [part for part in re.split(r"(?<=[.!?])\s+", text.strip()) if part.strip()]
+    unique = list(dict.fromkeys(parts))
+    return " ".join(unique) if len(unique) < len(parts) else text
+
+
 def model_signal(text: str) -> float:
     """
     The signal, as a 0–1 score. **Higher means more likely AI.**
@@ -125,7 +138,9 @@ def model_signal(text: str) -> float:
     inputs in Milestone 4 and seen what your own text actually scores. If you
     do, say so in your README: it's a scoring decision, not a detail.
     """
-    ppl = perplexity(text)
+    # The single measured improvement: remove exact repeated sentences before
+    # model scoring. The route still passes the original submission to style.
+    ppl = perplexity(_deduplicate_sentences(text))
 
     midpoint = 45.0    # perplexity that scores 0.5
     steepness = 1.6    # how sharply the score moves either side of it
@@ -157,5 +172,5 @@ if __name__ == "__main__":
         print("(no text given — scoring a sample)\n")
 
     print(f"Loading {config.DETECTOR_MODEL} (first run downloads ~550 MB)…")
-    print(f"perplexity     {perplexity(text):.1f}")
+    print(f"perplexity     {perplexity(_deduplicate_sentences(text)):.1f}")
     print(f"model_signal   {model_signal(text):.4f}   (higher = more likely AI)")
